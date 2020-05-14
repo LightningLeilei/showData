@@ -2,13 +2,13 @@
  * @Author: liuyixue
  * @Date: 2019-07-01 09:56:18
  * @LastEditors: liuyixue
- * @LastEditTime: 2020-05-15 00:15:45
+ * @LastEditTime: 2020-05-15 00:42:49
  * @Description: file content
  -->
 <template>
   <div class="hello">
     <Card :bordered="false">
-      <p>在线教学运行基本平稳，共运行课程____门，活跃教师____人，活跃学生_____人，其中学习空间每日运行课程平均____门，每日活跃教师平均_____人，每日活跃学生平均_____人；雨课堂每日运行课程平均____门，每日活跃教师平均_____人，每日活跃学生平均_____人。</p>
+      <p style="font-size:20px">在线教学运行基本平稳，共运行课程____门，活跃教师____人，活跃学生_____人，其中学习空间每日运行课程平均____门，每日活跃教师平均_____人，每日活跃学生平均_____人；雨课堂每日运行课程平均____门，每日活跃教师平均_____人，每日活跃学生平均_____人。</p>
     </Card>
     <Row style="margin:20px;" type="flex" justify="space-between">
       <Button style="background-color:#fb6e52;" @click="jumptoYxkc">运行课程</Button>
@@ -25,12 +25,32 @@
           <p>在线教学运行基本平稳，共运行课程____门，活跃教师____人，活跃学生_____人，其中学习空间每日运行课程平均____门，每日活跃教师平均_____人，每日活跃学生平均_____人；雨课堂每日运行课程平均____门，每日活跃教师平均_____人，每日活跃学生平均_____人。 </p>
         </Col>
         <Col span="12">
+          <div id="map" style="height:300px"></div>
         </Col>
       </Row>
-      
     </Card>
     <Card :bordered="false">
-      <p>在线教学运行基本平稳，共运行课程____门，活跃教师____人，活跃学生_____人，其中学习空间每日运行课程平均____门，每日活跃教师平均_____人，每日活跃学生平均_____人；雨课堂每日运行课程平均____门，每日活跃教师平均_____人，每日活跃学生平均_____人。 </p>
+      <div class="cardTitle"><Icon type="ios-square" />教学互动</div>
+      <Row>
+        <Col span="12">
+          <div id="map1" style="height:300px"></div>
+        </Col>
+        <Col span="12">
+          <p>在线教学运行基本平稳，共运行课程____门，活跃教师____人，活跃学生_____人，其中学习空间每日运行课程平均____门，每日活跃教师平均_____人，每日活跃学生平均_____人；雨课堂每日运行课程平均____门，每日活跃教师平均_____人，每日活跃学生平均_____人。 </p>
+        </Col>
+        
+      </Row>
+    </Card>
+    <Card :bordered="false">
+      <div class="cardTitle"><Icon type="ios-square" />教学资源</div>
+      <Row>
+        <Col span="12">
+          <p>在线教学运行基本平稳，共运行课程____门，活跃教师____人，活跃学生_____人，其中学习空间每日运行课程平均____门，每日活跃教师平均_____人，每日活跃学生平均_____人；雨课堂每日运行课程平均____门，每日活跃教师平均_____人，每日活跃学生平均_____人。 </p>
+        </Col>
+        <Col span="12">
+          <div id="map2" style="height:300px"></div>
+        </Col>
+      </Row>
     </Card>
   </div>
 </template>
@@ -44,14 +64,37 @@ export default {
     }
   },
   mounted() {
-    // console.log('name')
-    // console.log(this.param)
+    this.echartsGeo(this)
   },
   methods: {
     jumptoYxkc() {
       this.$router.push({
         path: '/mapChina'
       })
+    },
+    echartsGeo(self) {
+      let echarts = require('echarts')
+      let myChart = echarts.init(document.getElementById('map'))
+      let myChart1 = echarts.init(document.getElementById('map1'))
+      let myChart2 = echarts.init(document.getElementById('map2'))
+
+      let option = {
+        yAxis: {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        xAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: [120, 200, 150, 80, 70, 110, 130],
+            type: 'bar'
+        }]
+        };
+      myChart.setOption(option)
+      myChart1.setOption(option)
+      myChart2.setOption(option)
+
     }
   },
 }
@@ -63,9 +106,7 @@ export default {
   margin:20px;
   font-size: 18px;
 }
-.ivu-card :first-child{
-    font-size: 20px;
-}
+
 /* 首行缩进 */
 p{ text-indent:2em;}
 /* 修改按钮格式 */
@@ -88,4 +129,5 @@ p{ text-indent:2em;}
   margin-right: 10px;
   vertical-align: 0;
 }
+
 </style>
