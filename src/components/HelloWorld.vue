@@ -2,7 +2,7 @@
  * @Author: liuyixue
  * @Date: 2019-07-01 09:56:18
  * @LastEditors: liuyixue
- * @LastEditTime: 2020-05-15 23:44:27
+ * @LastEditTime: 2020-05-18 13:02:34
  * @Description: file content
  -->
 <template>
@@ -11,12 +11,15 @@
       <p style="font-size:20px">在线教学运行基本平稳，共运行课程{{num}}门，活跃教师{{num}}人，活跃学生{{num}}人。其中学习空间每日运行课程平均{{num}}门，每日活跃教师平均{{num}}人，每日活跃学生平均{{num}}人；雨课堂每日运行课程平均{{num}}门，每日活跃教师平均{{num}}人，每日活跃学生平均{{num}}人。</p>
     </Card>
     <Row style="margin:20px;" type="flex" justify="space-between">
-      <Button style="background-color:#fb6e52;" @click="jumptoYxkc">运行课程<div>{{23}}</div></Button>
-      <Button style="background-color:#ffc655;">活跃教师<div>{{23}}</div></Button>
-      <Button style="background-color:#2dc7e9;">活跃学生<div>{{23}}</div></Button>
-      <Button style="background-color:#3cd7b8;">活跃班级<div>{{23}}</div></Button>
-      <Button style="background-color:#f6b37f;">教学互动<div>{{23}}</div></Button>
-      <Button style="background-color:#8f9ae9;">教学资源<div>{{23}}</div></Button>
+      <Button style="background-color:#fb6e52;" @click="jumptoYxkc" id="yxkc">运行课程<div>{{23}}</div></Button>
+      <Button style="background-color:#ffc655;" @click="jumptoHyjs" id="hyjs">活跃教师<div>{{23}}</div></Button>
+      <Button style="background-color:#2dc7e9;" @click="jumptoHyxs" id="hyxs">活跃学生<div>{{23}}</div></Button>
+      <Button style="background-color:#3cd7b8;" @click="jumptoHybj" id="hybj">活跃班级<div>{{23}}</div></Button>
+      <Button style="background-color:#f6b37f;" @click="jumptoJxhd" id="jxhd">教学互动<div>{{23}}</div></Button>
+      <Button style="background-color:#8f9ae9;" @click="jumptoJxzy" id="jxzy">教学资源<div>{{23}}</div></Button>
+
+      <!-- <Button style="background-color:#fb6e52;" to="./yxkc">运行课程<div>{{55}}</div></Button> -->
+
     </Row>
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />各院系运行课程</div>
@@ -52,16 +55,15 @@
         </Col>
       </Row>
     </Card>
-     <Card :bordered="false">
+    <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />到课率</div>
       <Row>
         <Col span="12">
-          <div id="map1" style="height:300px"></div>
+          <div id="map3" style="height:300px"></div>
         </Col>
         <Col span="12">
           <p>{{strings}}时段内教学过程中平均到课率为{{num}}，具体到课率统计如图所示。 </p>
         </Col>
-        
       </Row>
     </Card>
     <Card :bordered="false">
@@ -71,17 +73,20 @@
           <p>{{strings}}时段内最受学生们欢迎的课程为{{strings}}、{{strings}}、{{strings}}、{{strings}}和{{strings}}。参与学生人数较多的课程与其参与人次如图所示。 </p>
         </Col>
         <Col span="12">
-          <div id="map2" style="height:300px"></div>
+          <div id="map4" style="height:300px"></div>
         </Col>
       </Row>
     </Card>
-
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />学习空间（学习通）</div>
       <p>学习空间（学习通）共运行课程{{num}}门，平均每日运行课程{{num}}门，活跃教师{{num}}人，平均每日活跃教师{{num}}人，活跃学生{{num}}人，平均每日活跃学生{{num}}人。详细情况如下表所示: </p>
-      <div>
-        <Table :columns="XxkjTable.columns1" :data="XxkjTable.data1"/>
-        <Row type="flex" justify="end">
+      <!-- <div style="width:80%"> -->
+        <Row type="flex" justify="center">
+          <Col span="4"></Col>
+          <Col span="16">
+            <Table border stripe :columns="XxkjTable.columns1" :data="XxkjTable.data1"/>
+          </Col>
+          <Col span="4"></Col>
           <!-- <Page
             :total="total"
             ref="pager"
@@ -95,14 +100,17 @@
             @on-page-size-change="changePageSize"
           ></Page> -->
         </Row>
-      </div>
+      <!-- </div> -->
     </Card>
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />雨课堂</div>
-      <p>雨课堂共运行课程     门，平均每日运行课程     门，活跃教师    人，平均每日活跃教师     人，活跃学生    人，平均每日活跃学生     人。详细情况如下表所示: </p>
-      <div>
-        <Table :columns="YktTable.columns1" :data="YktTable.data1"/>
-        <Row type="flex" justify="end">
+      <p>雨课堂共运行课程{{num}}门，平均每日运行课程{{num}}门，活跃教师{{num}}人，平均每日活跃教师{{num}}人，活跃学生{{num}}人，平均每日活跃学生{{num}}人。详细情况如下表所示: </p>
+        <Row type="flex" justify="center">
+          <Col span="4"></Col>
+          <Col span="16">
+        <Table border stripe  :columns="YktTable.columns1" :data="YktTable.data1"/>
+        </Col>
+          <Col span="4"></Col>
           <!-- <Page
             :total="total"
             ref="pager"
@@ -116,7 +124,7 @@
             @on-page-size-change="changePageSize"
           ></Page> -->
         </Row>
-      </div>    </Card>
+      </Card>
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />运行监测</div>
       <p>根据本周运行监测：</p>
@@ -124,6 +132,13 @@
       <p>2.因疫情期间数据接口调整，导致学校中间库数据同步不及时。雨课堂本周修复了数据接口同步的问题。</p>
       <p>3.本周有老师在备课时反馈超星直播客户端对上传加载的图片格式判断不正确，不能很好的适配。超星给出解决方案：3月30日上午完成了直播客户端的最新更新：优化了加载图片时，对图片格式的判断；同时也修改了屏幕共享直播时，自动切换到图片的问题。</p>
     </Card>
+    <Row type="flex" justify="center">
+      <Col span="10"></Col>
+      <Col span="4">
+        <Button style="background-color:#fb6e52;">点击导出简报</Button>
+      </Col>
+      <Col span="10"></Col>
+    </Row>
   </div>
 </template>
 
@@ -156,36 +171,183 @@ export default {
     }
   },
   mounted() {
-    this.echartsGeo(this)
+    this.echartsGeo()
   },
   methods: {
     jumptoYxkc() {
       this.$router.push({
-        path: '/mapChina'
+        path: '/yxkc'
       })
     },
-    echartsGeo(self) {
+    jumptoHyjs() {
+      this.$router.push({
+        path: '/hyjs'
+      })
+    },
+    jumptoHyxs() {
+      this.$router.push({
+        path: '/hyxs'
+      })
+    },
+    jumptoHybj() {
+      this.$router.push({
+        path: '/hybj'
+      })
+    },
+    jumptoJxhd() {
+      this.$router.push({
+        path: '/jxhd'
+      })
+    },
+    jumptoJxzy() {
+      this.$router.push({
+        path: '/jxzy'
+      })
+    },
+    echartsGeo() {
       let echarts = require('echarts')
       let myChart = echarts.init(document.getElementById('map'))
       let myChart1 = echarts.init(document.getElementById('map1'))
       let myChart2 = echarts.init(document.getElementById('map2'))
+      let myChart3 = echarts.init(document.getElementById('map3'))
+      let myChart4 = echarts.init(document.getElementById('map4'))
+
 
       let option = {
+        dataset: {
+          source: [
+            [ 'amount', 'product'],
+            [ 58212, 'Matcha Latte'],
+            [ 78254, 'Milk Tea'],
+            [ 41032, 'Cheese Cocoa'],
+            [ 12755, 'Cheese Brownie'],
+            [ 20145, 'Matcha Cocoa'],
+            [ 79146, 'Tea'],
+            [ 91852, 'Orange Juice'],
+            [ 101852, 'Lemon Juice'],
+            [ 20112, 'Walnut Brownie']
+          ]
+        },
+        grid: {containLabel: true},
+        xAxis: {name: 'amount'},
+        yAxis: {type: 'category'},
+        visualMap: {
+          // 视觉效果数值以横坐标amount为基准
+          orient: 'horizontal',
+          left: 'center',
+          min: 10000,
+          max: 100000,
+          text: ['High Score', 'Low Score'],
+          // Map the score column to color
+          dimension: 0,
+          inRange: {
+              color: ['#D7DA8B', '#E15457']
+          }
+        },
+        series: [
+          {
+            type: 'bar',
+            encode: {
+              // Map the "amount" column to X axis.
+              x: 'amount',
+              // Map the "product" column to Y axis
+              y: 'product'
+            }
+          }
+        ]
+      };
+
+      let option1 = {
+        xAxis: {
+          type: 'category',
+          boundaryGap: false
+        },
         yAxis: {
+          type: 'value',
+          boundaryGap: [0, '30%']
+        },
+        visualMap: {
+          type: 'piecewise',
+          show: false,
+          dimension: 0,
+          seriesIndex: 0,
+          pieces: [{
+            gt: 1,
+            lt: 3,
+            color: 'rgba(0, 180, 0, 0.5)'
+          }, {
+            gt: 5,
+            lt: 7,
+            color: 'rgba(0, 180, 0, 0.5)'
+          }]
+        },
+        series: [
+          {
+            type: 'line',
+            smooth: 0.6,
+            symbol: 'none',
+            lineStyle: {
+              color: 'green',
+              width: 5
+            },
+            markLine: {
+              symbol: ['none', 'none'],
+              label: {show: false},
+              data: [
+                {xAxis: 1},
+                {xAxis: 3},
+                {xAxis: 5},
+                {xAxis: 7}
+              ]
+            },
+            areaStyle: {},
+            data: [
+              ['2019-10-10', 200],
+              ['2019-10-11', 400],
+              ['2019-10-12', 650],
+              ['2019-10-13', 500],
+              ['2019-10-14', 250],
+              ['2019-10-15', 300],
+              ['2019-10-16', 450],
+              ['2019-10-17', 300],
+              ['2019-10-18', 100]
+            ]
+          }
+        ]
+      };
+      let option2 = {
+        color: ['#3398DB'],
+        xAxis: {
             type: 'category',
             data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
         },
-        xAxis: {
+        yAxis: {
             type: 'value'
         },
         series: [{
             data: [120, 200, 150, 80, 70, 110, 130],
             type: 'bar'
         }]
-        };
+      };
+      let option3 = {
+        xAxis: {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: [120, 200, 150, 80, 70, 110, 130],
+            type: 'line',
+            areaStyle: {}
+        }]
+      };
       myChart.setOption(option)
-      myChart1.setOption(option)
-      myChart2.setOption(option)
+      myChart1.setOption(option1)
+      myChart2.setOption(option2)
+      myChart3.setOption(option3)
+      myChart4.setOption(option2)
 
     },
     changePage (d) {
