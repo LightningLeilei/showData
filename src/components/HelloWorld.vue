@@ -2,7 +2,7 @@
  * @Author: liuyixue
  * @Date: 2019-07-01 09:56:18
  * @LastEditors: liuyixue
- * @LastEditTime: 2020-05-18 13:02:34
+ * @LastEditTime: 2020-05-18 15:26:54
  * @Description: file content
  -->
 <template>
@@ -128,14 +128,17 @@
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />运行监测</div>
       <p>根据本周运行监测：</p>
-      <p>1.经监测，各个技术支持群本周出现个别用户咨询问题，集中在腾讯课堂摄像头显示、雨课堂统计到课率、大学MOOC的使用问题、网络缴费问题、雨课堂留学生登录问题等，中心均已协调解决。</p>
-      <p>2.因疫情期间数据接口调整，导致学校中间库数据同步不及时。雨课堂本周修复了数据接口同步的问题。</p>
-      <p>3.本周有老师在备课时反馈超星直播客户端对上传加载的图片格式判断不正确，不能很好的适配。超星给出解决方案：3月30日上午完成了直播客户端的最新更新：优化了加载图片时，对图片格式的判断；同时也修改了屏幕共享直播时，自动切换到图片的问题。</p>
+      <div class="p_inAll">
+        <p>1.经监测，各个技术支持群本周出现个别用户咨询问题，集中在腾讯课堂摄像头显示、雨课堂统计到课率、大学MOOC的使用问题、网络缴费问题、雨课堂留学生登录问题等，中心均已协调解决。</p>
+        <p>2.因疫情期间数据接口调整，导致学校中间库数据同步不及时。雨课堂本周修复了数据接口同步的问题。</p>
+        <p>3.本周有老师在备课时反馈超星直播客户端对上传加载的图片格式判断不正确，不能很好的适配。超星给出解决方案：3月30日上午完成了直播客户端的最新更新：优化了加载图片时，对图片格式的判断；同时也修改了屏幕共享直播时，自动切换到图片的问题。</p>
+      </div>
+      
     </Card>
     <Row type="flex" justify="center">
       <Col span="10"></Col>
       <Col span="4">
-        <Button style="background-color:#fb6e52;">点击导出简报</Button>
+        <Button style="background-color:#a40000;width:200px" @click="exportReport">点击导出简报</Button>
       </Col>
       <Col span="10"></Col>
     </Row>
@@ -361,6 +364,9 @@ export default {
       if (self.$refs['pager'].currentPage === 1) {
         self.getList()
       }
+    },
+    exportReport() {
+      alert('还未实现')
     }
   },
 }
@@ -374,7 +380,15 @@ export default {
 }
 
 /* 首行缩进 */
-p{ text-indent:2em;}
+p{ 
+  text-indent:2em;
+  line-height: 2;
+}
+.p_inAll p{
+  text-indent:0;
+  margin-left:2em;
+  margin-right: 1em;
+}
 /* 修改按钮格式 */
 [type=button]{
   width: 160px;

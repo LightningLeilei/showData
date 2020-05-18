@@ -2,7 +2,7 @@
  * @Author: liuyixue
  * @Date: 2019-07-01 09:56:18
  * @LastEditors: liuyixue
- * @LastEditTime: 2020-05-14 23:59:08
+ * @LastEditTime: 2020-05-18 14:59:11
  * @Description: file content
  -->
 <template>
@@ -65,5 +65,6 @@ export default {
   font-size: 16px;
   color: #fff;
   background:#2348ba;
+  margin-top: 20px;
 }
 </style>
