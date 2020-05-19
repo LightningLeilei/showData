@@ -4,11 +4,7 @@
  * @LastEditors: liuyixue
  * @LastEditTime: 2020-05-18 20:37:47
  * @Description: file content
-<<<<<<< HEAD
- */ 
-=======
  */
->>>>>>> 前四个
 export const tbYxkcList = {
   columns1: [
     {
@@ -26,99 +22,6 @@ export const tbYxkcList = {
       align: 'center',
       key: 'kcCollege'
     }],
-<<<<<<< HEAD
-    data1:[{
-      kcName: '计算机科学',
-      kcTeacher: '计老师',
-      kcCollege: '信息科学与技术学院'
-    },
-    {
-      kcName: '软件工程',
-      kcTeacher: '工老师',
-      kcCollege: '软件学院'
-    },
-    {
-      kcName: '计算机科学',
-      kcTeacher: '计老师',
-      kcCollege: '信息科学与技术学院'
-    },
-    {
-      kcName: '软件工程',
-      kcTeacher: '工老师',
-      kcCollege: '软件学院'
-    },
-    {
-      kcName: '计算机科学',
-      kcTeacher: '计老师',
-      kcCollege: '信息科学与技术学院'
-    },
-    {
-      kcName: '软件工程',
-      kcTeacher: '工老师',
-      kcCollege: '软件学院'
-    },
-    {
-      kcName: '计算机科学',
-      kcTeacher: '计老师',
-      kcCollege: '信息科学与技术学院'
-    },
-    {
-      kcName: '软件工程',
-      kcTeacher: '工老师',
-      kcCollege: '软件学院'
-    },
-    {
-      kcName: '计算机科学',
-      kcTeacher: '计老师',
-      kcCollege: '信息科学与技术学院'
-    },
-    {
-      kcName: '软件工程',
-      kcTeacher: '工老师',
-      kcCollege: '软件学院'
-    },
-    {
-      kcName: '计算机科学',
-      kcTeacher: '计老师',
-      kcCollege: '信息科学与技术学院'
-    },
-    {
-      kcName: '软件工程',
-      kcTeacher: '工老师',
-      kcCollege: '软件学院'
-    },
-    {
-      kcName: '计算机科学',
-      kcTeacher: '计老师',
-      kcCollege: '信息科学与技术学院'
-    },
-    {
-      kcName: '软件工程',
-      kcTeacher: '工老师',
-      kcCollege: '软件学院'
-    },
-    {
-      kcName: '计算机科学',
-      kcTeacher: '计老师',
-      kcCollege: '信息科学与技术学院'
-    },
-    {
-      kcName: '软件工程',
-      kcTeacher: '工老师',
-      kcCollege: '软件学院'
-    },
-    {
-      kcName: '计算机科学',
-      kcTeacher: '计老师',
-      kcCollege: '信息科学与技术学院'
-    },
-    {
-      kcName: '软件工程',
-      kcTeacher: '工老师',
-      kcCollege: '软件学院'
-    }]
-}
-=======
   data1: [{
     kcName: '计算机科学',
     kcTeacher: '计老师',
@@ -210,4 +113,3 @@ export const tbYxkcList = {
     kcCollege: '软件学院'
   }]
 }
->>>>>>> 前四个
