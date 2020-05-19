@@ -2,7 +2,7 @@
  * @Author: liuyixue
  * @Date: 2020-05-18 11:52:49
  * @LastEditors: liuyixue
- * @LastEditTime: 2020-05-18 21:03:22
+ * @LastEditTime: 2020-05-18 21:16:03
  * @Description: file content
 --> 
 <template>
@@ -110,16 +110,16 @@ export default {
           console.log("error!!")
         }
       })
-      // Http.post("protection/build/page", JSON.stringify(params), "application/json").then(d => {
-      //           if (d.code === 200) {
-      //               this.constructList.data1 = d["data"]["records"]
-      //               this.total = d["data"]["total"]
-      //           } else {
-      //               this.rankList.data1 = []
-      //               this.total = 0;
-      //               this.$Message.error("获取数据失败");
-      //           }
-      //       })
+      Http.post("protection/build/page", JSON.stringify(params), "application/json").then(d => {
+                if (d.code === 200) {
+                    this.constructList.data1 = d["data"]["records"]
+                    this.total = d["data"]["total"]
+                } else {
+                    this.rankList.data1 = []
+                    this.total = 0;
+                    this.$Message.error("获取数据失败");
+                }
+            })
       this.yxkcTable.data1 = tbYxkcList.data1
       this.total = tbYxkcList.data1.length
     },
