@@ -2,6 +2,20 @@
  * @Author: liuyixue
  * @Date: 2020-05-18 11:52:49
  * @LastEditors: liuyixue
+<<<<<<< HEAD
+ * @LastEditTime: 2020-05-18 12:00:20
+ * @Description: file content
+--> 
+<template>
+    <div>
+        <div id="hyxs">活跃学生</div>
+    </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+=======
  * @LastEditTime: 2020-05-18 22:00:29
  * @Description: file content
 -->
@@ -83,11 +97,15 @@ export default {
       total: total || 12,
       limit: parseInt(pageSize) || 10, // 每页条数
       offset: parseInt(pageOffset) || 0, // 每页的查询索引
+>>>>>>> 前四个
     }
   },
   mounted() {
   },
   methods: {
+<<<<<<< HEAD
+    
+=======
     getList() {
       const params = {
         limit: this.limit, // 单页数据条数
@@ -142,10 +160,13 @@ export default {
         self.getList()
       }
     }
+>>>>>>> 前四个
   }
 }
 </script>
 
+<<<<<<< HEAD
+=======
 <style scoped>
 .cardTitle{
   margin: 20px 0 30px 0;
@@ -154,3 +175,4 @@ export default {
   color: #255aaa;
 }
 </style>
+>>>>>>> 前四个
