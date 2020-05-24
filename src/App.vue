@@ -2,17 +2,17 @@
  * @Author: liuyixue
  * @Date: 2019-07-01 09:56:18
  * @LastEditors: liuyixue
- * @LastEditTime: 2020-05-18 14:59:11
+ * @LastEditTime: 2020-05-24 22:50:11
  * @Description: file content
  -->
 <template>
   <div id="app">
     <div class="layout">
       <Layout>
-        <Header>Header</Header>
+        <Header>
+          
+        </Header>
         <Content>
-          <!-- <div>Content</div> -->
-          <!-- <img src="./assets/logo.png"> -->
           <Row type="flex" justify="center">
             <Col span="3"></Col>
             <Col span="18">
@@ -29,7 +29,23 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data() {
+    return {
+      // curRouter: this.$router.currentRoute.path
+    }
+  },
+  mounted() {
+    console.log(this.$router.currentRoute)
+    if(this.$router.currentRoute.path == '/') {
+      document.getElementsByClassName('select')[0].style.display='block'
+    }else {
+      document.getElementsByClassName('select')[0].style.display='none'
+    }
+  },
+  methods: {
+    
+  }
 }
 </script>
 
@@ -51,10 +67,10 @@ export default {
     overflow: hidden;
 }
 .ivu-layout-header{
-  background-image: url("./assets/top.png");
-  /* display:inline-block; */
+  background: no-repeat scroll;
+  background-size: 100%;
+  background-image: url("./assets/top.png") ;
   height:222px;
-    /* background-image: url("./assets/top.png"); */
 }
 .ivu-layout-content{
   /* background: white; */

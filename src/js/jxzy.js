@@ -1,8 +1,8 @@
 /*
- * @Author: liuyixue
+ * @Author: 
  * @Date: 2020-05-18 17:30:53
- * @LastEditors: liuyixue
- * @LastEditTime: 2020-05-18 20:37:47
+ * @LastEditors: 
+ * @LastEditTime: 2020-05-19 19:17:01
  * @Description: file content
  */
 export const tbJxzyList = {

@@ -2,7 +2,7 @@
  * @Author: liuyixue
  * @Date: 2020-05-18 11:52:49
  * @LastEditors: liuyixue
- * @LastEditTime: 2020-05-18 21:16:03
+ * @LastEditTime: 2020-05-24 22:00:06
  * @Description: file content
 --> 
 <template>
@@ -86,6 +86,7 @@ export default {
     }
   },
   mounted() {
+    document.getElementsByClassName('select')[0].style.display='none'
   },
   methods: {
     getList() {

@@ -2,21 +2,43 @@
  * @Author: liuyixue
  * @Date: 2019-07-01 09:56:18
  * @LastEditors: liuyixue
- * @LastEditTime: 2020-05-18 15:26:54
+ * @LastEditTime: 2020-05-24 23:23:21
  * @Description: file content
  -->
 <template>
   <div class="hello">
+    <div class="select" style="margin:10px">
+      <Row type="flex" justify="centet" >
+        <Col span="6"></Col>
+        <Col span="4">
+          <span style="font-size:16px;float:right;margin:5px 10px">请选择时间段</span>
+        </Col>
+        <Col span="4">
+          <Select style="width:200px" v-model="time_selected" @on-change="changeDate">
+            <Option value="1">昨日</Option>
+            <Option value="2">近7日</Option>
+            <Option value="3">近30日</Option>
+            <Option value="4">自定义</Option>
+          </Select>
+          </Col>
+        <Col span="4">
+          <div id="datePick" style="visibility:hidden;margin-left:30px">
+            <DatePicker type="daterange" placement="bottom-end" placeholder="请选择" style="width: 200px;"  @on-change="changeDateSelf" v-model="selfDate"></DatePicker>
+          </div>
+        </Col>
+        <Col span="6"></Col>
+      </Row>
+    </div>
     <Card :bordered="false">
-      <p style="font-size:20px">在线教学运行基本平稳，共运行课程{{num}}门，活跃教师{{num}}人，活跃学生{{num}}人。其中学习空间每日运行课程平均{{num}}门，每日活跃教师平均{{num}}人，每日活跃学生平均{{num}}人；雨课堂每日运行课程平均{{num}}门，每日活跃教师平均{{num}}人，每日活跃学生平均{{num}}人。</p>
+      <p style="font-size:20px">在线教学运行基本平稳，共运行课程{{totalAll.kc_total}}门，活跃教师{{totalAll.js_total}}人，活跃学生{{totalAll.xs_total}}人。其中学习空间每日运行课程平均{{totalAll.xx_kc}}门，每日活跃教师平均{{totalAll.xx_js}}人，每日活跃学生平均{{totalAll.xx_xs}}人；雨课堂每日运行课程平均{{totalAll.ykt_kc}}门，每日活跃教师平均{{totalAll.ykt_js}}人，每日活跃学生平均{{totalAll.ykt_xs}}人。</p>
     </Card>
     <Row style="margin:20px;" type="flex" justify="space-between">
-      <Button style="background-color:#fb6e52;" @click="jumptoYxkc" id="yxkc">运行课程<div>{{23}}</div></Button>
-      <Button style="background-color:#ffc655;" @click="jumptoHyjs" id="hyjs">活跃教师<div>{{23}}</div></Button>
-      <Button style="background-color:#2dc7e9;" @click="jumptoHyxs" id="hyxs">活跃学生<div>{{23}}</div></Button>
-      <Button style="background-color:#3cd7b8;" @click="jumptoHybj" id="hybj">活跃班级<div>{{23}}</div></Button>
-      <Button style="background-color:#f6b37f;" @click="jumptoJxhd" id="jxhd">教学互动<div>{{23}}</div></Button>
-      <Button style="background-color:#8f9ae9;" @click="jumptoJxzy" id="jxzy">教学资源<div>{{23}}</div></Button>
+      <Button style="background-color:#fb6e52;" @click="jumptoYxkc" id="yxkc">运行课程<div>{{total_btn.yxkc}}</div></Button>
+      <Button style="background-color:#ffc655;" @click="jumptoHyjs" id="hyjs">活跃教师<div>{{total_btn.hyjs}}</div></Button>
+      <Button style="background-color:#2dc7e9;" @click="jumptoHyxs" id="hyxs">活跃学生<div>{{total_btn.hyxs}}</div></Button>
+      <Button style="background-color:#3cd7b8;" @click="jumptoHybj" id="hybj">活跃班级<div>{{total_btn.hybj}}</div></Button>
+      <Button style="background-color:#f6b37f;" @click="jumptoJxhd" id="jxhd">教学互动<div>{{total_btn.jxhd}}</div></Button>
+      <Button style="background-color:#8f9ae9;" @click="jumptoJxzy" id="jxzy">教学资源<div>{{total_btn.jxzy}}</div></Button>
 
       <!-- <Button style="background-color:#fb6e52;" to="./yxkc">运行课程<div>{{55}}</div></Button> -->
 
@@ -25,7 +47,10 @@
       <div class="cardTitle"><Icon type="ios-square" />各院系运行课程</div>
       <Row>
         <Col span="12">
-          <p>{{strings}}时段内运行课程排行前列的学院统计如图所示，其中运行量最高的学院为{{strings}}学院、{{strings}}学院、{{strings}}学院、{{strings}}学院和{{strings}}学院。</p>
+          <!-- <p>{{selfDate}}时段内运行课程排行前列的学院统计如图所示，其中运行量最高的学院为{{strings}}学院、{{strings}}学院、{{strings}}学院、{{strings}}学院和{{strings}}学院。</p> -->
+
+          <span>{{selfDate}}时段内运行课程排行前列的学院统计如图所示，其中运行量最高的学院为</span>
+          <span v-for="(item,idx) in total_yxkc.data1" :key ="idx" >{{item.value}}学院</span>
         </Col>
         <Col span="12">
           <div id="map" style="height:300px"></div>
@@ -39,7 +64,7 @@
           <div id="map1" style="height:300px"></div>
         </Col>
         <Col span="12">
-          <p>{{strings}}时段内教学过程中平均每日互动数量为{{num}}次，具体教学互动情况如图所示。</p>
+          <p>{{selfDate}}时段内教学过程中平均每日互动数量为{{total_jxhd.counts}}次，具体教学互动情况如图所示。</p>
         </Col>
         
       </Row>
@@ -48,7 +73,7 @@
       <div class="cardTitle"><Icon type="ios-square" />教学资源</div>
       <Row>
         <Col span="12">
-          <p>{{strings}}时段内各课程教学资源上传数量如图所示，其中教学资源上传数量最多的课程为{{strings}}，{{strings}}，     ，{{strings}}和{{strings}}。 </p>
+          <p>{{selfDate}}时段内各课程教学资源上传数量如图所示，其中教学资源上传数量最多的课程为{{strings}}，{{strings}}，     ，{{strings}}和{{strings}}。 </p>
         </Col>
         <Col span="12">
           <div id="map2" style="height:300px"></div>
@@ -62,7 +87,7 @@
           <div id="map3" style="height:300px"></div>
         </Col>
         <Col span="12">
-          <p>{{strings}}时段内教学过程中平均到课率为{{num}}，具体到课率统计如图所示。 </p>
+          <p>{{selfDate}}时段内教学过程中平均到课率为{{num}}，具体到课率统计如图所示。 </p>
         </Col>
       </Row>
     </Card>
@@ -70,7 +95,7 @@
       <div class="cardTitle"><Icon type="ios-square" />最受欢迎课程</div>
       <Row>
         <Col span="12">
-          <p>{{strings}}时段内最受学生们欢迎的课程为{{strings}}、{{strings}}、{{strings}}、{{strings}}和{{strings}}。参与学生人数较多的课程与其参与人次如图所示。 </p>
+          <p>{{selfDate}}时段内最受学生们欢迎的课程为{{strings}}、{{strings}}、{{strings}}、{{strings}}和{{strings}}。参与学生人数较多的课程与其参与人次如图所示。 </p>
         </Col>
         <Col span="12">
           <div id="map4" style="height:300px"></div>
@@ -156,9 +181,62 @@ export default {
     // const pageOffset = this.offset
     // const total = checkInfoList.data1.length
     return {
+      // openDateRange:true,
+      // curRouter: this.$router.currentRoute.path,
       num: 99,
+      // 选择日期或自定义
+      time_selected: 0,
+      selfDate: '',
+      // 最上方统计数据
+      totalAll:{ 
+        kc_total: 100,
+        xx_kc: 100,
+        ykt_kc: 100,
+        js_total: 101,
+        xx_js: 101,
+        ykt_js: 101,
+        xs_total: 102,
+        xx_xs: 102,
+        ykt_xs: 102
+      },
+      // 下钻页面入口按钮 统计数据
+      total_btn:{
+        yxkc: 10,
+        hyjs: 11,
+        hyxs: 12,
+        hybj: 13,
+        jxhd: 14,
+        jxzy: 15
+      },
+      // 各院系运行课程 统计数据
+      total_yxkc:{
+        data1:[{
+          label:1,
+          value:'sx'
+          },
+          {
+          label:2,
+          value:'yw'
+          },
+          {
+          label:2,
+          value:'enl'
+          }
+        ]
+      },
+      // 教学互动 统计数据
+      total_jxhd:{
+        counts: 0
+      },
+      // 教学资源 统计数据
+      total_jxzy:{},
+
+      // 到课率 统计数据
+      total_dkl:{},
+
+      // 最受欢迎课程 统计数据
+      total_hykc:{},
       strings: 'here',
-      msg: 'Welcome to Your Vue.js App',
       total: 7,
       // limit: parseInt(pageSize) || 10, // 每页条数
       // offset: parseInt(pageOffset) || 0, // 每页的查询索引
@@ -175,8 +253,26 @@ export default {
   },
   mounted() {
     this.echartsGeo()
+    // console.log(this.$router.currentRoute)  // 获取当前路由
   },
   methods: {
+    // 日期下拉菜单
+    changeDate(val) {
+      if(val == 1){
+        this.selfDate = ''
+      }else if(val == 2) {
+        this.selfDate = ''
+      }else if(val == 3) {
+        this.selfDate = ''
+      }else if(val == 4) {
+        document.getElementById("datePick").style.visibility="visible"
+      }
+    },
+    // 自定义日期
+    changeDateSelf(d) {
+      alert(d)
+    },
+    // 跳转
     jumptoYxkc() {
       this.$router.push({
         path: '/yxkc'
