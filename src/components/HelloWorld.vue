@@ -23,7 +23,7 @@
           </Col>
         <Col span="4">
           <div id="datePick" style="visibility:hidden;margin-left:30px">
-            <DatePicker type="daterange" placement="bottom-end" placeholder="请选择" style="width: 200px;"  @on-change="changeDateSelf" v-model="selfDate"></DatePicker>
+            <DatePicker type="daterange" placement="bottom-end" format="yyyy-MM-dd" placeholder="请选择" style="width: 200px;"  @on-change="changeDateSelf" v-model="selfDate"></DatePicker>
           </div>
         </Col>
         <Col span="6"></Col>
@@ -158,7 +158,6 @@
         <p>2.因疫情期间数据接口调整，导致学校中间库数据同步不及时。雨课堂本周修复了数据接口同步的问题。</p>
         <p>3.本周有老师在备课时反馈超星直播客户端对上传加载的图片格式判断不正确，不能很好的适配。超星给出解决方案：3月30日上午完成了直播客户端的最新更新：优化了加载图片时，对图片格式的判断；同时也修改了屏幕共享直播时，自动切换到图片的问题。</p>
       </div>
-      
     </Card>
     <Row type="flex" justify="center">
       <Col span="10"></Col>
@@ -172,7 +171,24 @@
 
 <script>
 import { tbXxkjList,tbYktList } from '../js/tables'
-
+//外部引入js变量
+//import time from '../js/tables'
+    //今天
+    var day1 = new Date();
+    day1.setTime(day1.getTime())
+    var today = day1.getFullYear()+"-" + (day1.getMonth()+1) + "-" + day1.getDate()
+    //昨天
+    var day2 = new Date();
+    day2.setTime(day2.getTime()-24*60*60*1000);
+    var yesterday = day2.getFullYear()+"-" + (day2.getMonth()+1) + "-" + day2.getDate();
+    //七天前
+    var day3 = new Date();
+    day3.setTime(day3.getTime()-24*60*60*1000*7);
+    var sevenDaysAgo = day3.getFullYear()+"-" + (day3.getMonth()+1) + "-" + day3.getDate();
+    //三十天前
+    var day4 = new Date();
+    day4.setTime(day4.getTime()-24*60*60*1000*30);
+    var thirtyDaysAgo = day4.getFullYear()+"-" + (day4.getMonth()+1) + "-" + day4.getDate();
 export default {
   name: 'HelloWorld',
   data () {
@@ -181,12 +197,15 @@ export default {
     // const pageOffset = this.offset
     // const total = checkInfoList.data1.length
     return {
+      //newData:time.timeData(),
       // openDateRange:true,
       // curRouter: this.$router.currentRoute.path,
       num: 99,
       // 选择日期或自定义
       time_selected: 0,
-      selfDate: '',
+      selfDate: [],
+      startTime:'',
+      endTime:'',
       // 最上方统计数据
       totalAll:{ 
         kc_total: 100,
@@ -259,18 +278,40 @@ export default {
     // 日期下拉菜单
     changeDate(val) {
       if(val == 1){
-        this.selfDate = ''
+        this.startTime = yesterday
+        this.endTime = today
       }else if(val == 2) {
-        this.selfDate = ''
+        this.startTime = sevenDaysAgo
+        this.endTime = today
       }else if(val == 3) {
-        this.selfDate = ''
+        this.startTime = thirtyDaysAgo
+        this.endTime = today
+        alert(thirtyDaysAgo)
       }else if(val == 4) {
         document.getElementById("datePick").style.visibility="visible"
+        //this.selfDate的处理
+        console.log("startTime"+this.selfDate[0])
+        //alert(endTime)
       }
+    //数据传输
+    $.ajax({
+      type : "POST",
+      url : "/zxjx/teach-active/runCourse?startTime="+startTime+"&endTime="+endTime+"",
+      data : {
+          //id : id,
+      },
+      success : function(data) {
+          alert(data);
+      },
+      error : function(){
+          alert("错误");
+      }
+  });
+
     },
     // 自定义日期
     changeDateSelf(d) {
-      alert(d)
+      alert("startime"+this.selfDate[0])
     },
     // 跳转
     jumptoYxkc() {

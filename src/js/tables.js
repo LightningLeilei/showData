@@ -5,13 +5,21 @@
  * @LastEditTime: 2020-05-18 11:19:58
  * @Description: file content
  */ 
+//是否HelloWorld中的ajax直接返回相应的结果
+// $.ajax({
+//   type: "POST",
+//   url: "/zxjx/teach-active/runCourse",
+//   data: data,
+//   dataType: "json",
+//   success: function (data) {
+//      console.log(data);
+//   }});
 export const number = 5678;
 export const tbXxkjList = {
   columns1: [
     {
       title: '日期',
       align: 'center',
-
       key: 'modifyTime'
     },
     {
