@@ -2,19 +2,19 @@
  * @Author: liuyixue
  * @Date: 2019-07-01 09:56:18
  * @LastEditors: liuyixue
- * @LastEditTime: 2020-05-24 23:23:21
+ * @LastEditTime: 2020-05-25 18:33:23
  * @Description: file content
  -->
 <template>
   <div class="hello">
     <div class="select" style="margin:10px">
-      <Row type="flex" justify="centet" >
-        <Col span="6"></Col>
+      <Row type="flex" justify="center" >
+        <Col span="4"></Col>
         <Col span="4">
           <span style="font-size:16px;float:right;margin:5px 10px">请选择时间段</span>
         </Col>
-        <Col span="4">
-          <Select style="width:200px" v-model="time_selected" @on-change="changeDate">
+        <Col span="6">
+          <Select style="width:240px" v-model="time_selected" @on-change="changeDate">
             <Option value="1">昨日</Option>
             <Option value="2">近7日</Option>
             <Option value="3">近30日</Option>
@@ -23,7 +23,7 @@
           </Col>
         <Col span="4">
           <div id="datePick" style="visibility:hidden;margin-left:30px">
-            <DatePicker type="daterange" placement="bottom-end" format="yyyy-MM-dd" placeholder="请选择" style="width: 200px;"  @on-change="changeDateSelf" v-model="selfDate"></DatePicker>
+            <DatePicker style="width:240px" type="daterange" placement="bottom-end" format="yyyy-MM-dd" placeholder="请选择"  @on-change="changeDateSelf" v-model="selfDate"></DatePicker>
           </div>
         </Col>
         <Col span="6"></Col>
@@ -170,33 +170,19 @@
 </template>
 
 <script>
+import moment from 'moment'
 import { tbXxkjList,tbYktList } from '../js/tables'
 //外部引入js变量
-//import time from '../js/tables'
-    //今天
-    var day1 = new Date();
-    day1.setTime(day1.getTime())
-    var today = day1.getFullYear()+"-" + (day1.getMonth()+1) + "-" + day1.getDate()
-    //昨天
-    var day2 = new Date();
-    day2.setTime(day2.getTime()-24*60*60*1000);
-    var yesterday = day2.getFullYear()+"-" + (day2.getMonth()+1) + "-" + day2.getDate();
-    //七天前
-    var day3 = new Date();
-    day3.setTime(day3.getTime()-24*60*60*1000*7);
-    var sevenDaysAgo = day3.getFullYear()+"-" + (day3.getMonth()+1) + "-" + day3.getDate();
-    //三十天前
-    var day4 = new Date();
-    day4.setTime(day4.getTime()-24*60*60*1000*30);
-    var thirtyDaysAgo = day4.getFullYear()+"-" + (day4.getMonth()+1) + "-" + day4.getDate();
 export default {
   name: 'HelloWorld',
   data () {
+    const today = moment()
     // const checkInfoList = checkInfoListFunc(this)
     // const pageSize = this.limit
     // const pageOffset = this.offset
     // const total = checkInfoList.data1.length
     return {
+      today,
       //newData:time.timeData(),
       // openDateRange:true,
       // curRouter: this.$router.currentRoute.path,
@@ -277,46 +263,63 @@ export default {
   methods: {
     // 日期下拉菜单
     changeDate(val) {
-      if(val == 1){
-        this.startTime = yesterday
-        this.endTime = today
-      }else if(val == 2) {
-        this.startTime = sevenDaysAgo
-        this.endTime = today
+      let tempD
+      if(val == 1){ // 昨日
+      tempD = 1
+      }else if(val == 2) { // 近7日
+      tempD = 7
       }else if(val == 3) {
-        this.startTime = thirtyDaysAgo
-        this.endTime = today
-        alert(thirtyDaysAgo)
+        tempD = 30
       }else if(val == 4) {
         document.getElementById("datePick").style.visibility="visible"
-        //this.selfDate的处理
-        console.log("startTime"+this.selfDate[0])
-        //alert(endTime)
       }
-    //数据传输
-    $.ajax({
-      type : "POST",
-      url : "/zxjx/teach-active/runCourse?startTime="+startTime+"&endTime="+endTime+"",
-      data : {
-          //id : id,
-      },
-      success : function(data) {
-          alert(data);
-      },
-      error : function(){
-          alert("错误");
+      if(tempD){
+        // 处理“近X天”的日期，end时间为昨日
+        this.startTime = moment().subtract(tempD,'d').format("YYYY-MM-DD")
+        this.endTime = moment().subtract(1,'d').format("YYYY-MM-DD")
+        console.log(this.startTime)
+        console.log(this.endTime)
+        // ---------- 随后调用更新整个页面数据的方法this.updateIndexData(this.startTime,this.endTime)
       }
-  });
+    
+    },
+    updateIndexData(start,end) {
+      //数据传输
+      $.ajax({
+        type : "POST",
+        url : "/zxjx/teach-active/runCourse?startTime="+start+"&endTime="+end+"",
+        data : {
+            //id : id,
+        },
+        success : function(data) {
+            alert(data);
+        },
+        error : function(){
+            alert("错误");
+        }
+      });
 
     },
     // 自定义日期
     changeDateSelf(d) {
-      alert("startime"+this.selfDate[0])
+      // alert(d[0])
+      // alert('7d before'+ moment(d[0]).subtract(7,'d').format("YYYY-MM-DD"))
+      this.startTime = moment(d[0]).format("YYYY-MM-DD")
+      this.endTime = moment(d[1]).format("YYYY-MM-DD")
+      // alert("startime"+this.selfDate[0])
+      console.log(this.startTime)
+      console.log(this.endTime)
+      // ---------- 随后调用更新整个页面数据的方法
     },
-    // 跳转
+    // 带日期跳转
     jumptoYxkc() {
+      const params = {
+        start:this.startTime,
+        end:this.endTime
+      }
       this.$router.push({
-        path: '/yxkc'
+        path: '/yxkc',
+        query: params
       })
     },
     jumptoHyjs() {

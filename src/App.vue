@@ -2,7 +2,7 @@
  * @Author: liuyixue
  * @Date: 2019-07-01 09:56:18
  * @LastEditors: liuyixue
- * @LastEditTime: 2020-05-24 22:50:11
+ * @LastEditTime: 2020-05-25 18:13:58
  * @Description: file content
  -->
 <template>
@@ -36,12 +36,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$router.currentRoute)
-    if(this.$router.currentRoute.path == '/') {
-      document.getElementsByClassName('select')[0].style.display='block'
-    }else {
-      document.getElementsByClassName('select')[0].style.display='none'
-    }
   },
   methods: {
     

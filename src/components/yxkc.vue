@@ -2,7 +2,7 @@
  * @Author: liuyixue
  * @Date: 2020-05-18 11:52:49
  * @LastEditors: liuyixue
- * @LastEditTime: 2020-05-24 22:00:06
+ * @LastEditTime: 2020-05-25 18:36:58
  * @Description: file content
 --> 
 <template>
@@ -18,17 +18,17 @@
           </FormItem>
           </Col>
 
-          <Col span="10">
+          <Col span="8">
           <FormItem label="时间">
-            <DatePicker type="date" placeholder="请选择" v-model="formYxkc.dateSelect" @on-change="dataChange" ></DatePicker>
+            <DatePicker style="width:240px" type="daterange" placeholder="请选择" v-model="formYxkc.dateSelect" @on-change="dataChange" :options="dateOptions" ></DatePicker>
           </FormItem>
           </Col>
 
-          <Col span="4">
+          <!-- <Col span="4"> -->
           <FormItem>
             <Button type="primary" @click="check">查询</Button>
           </FormItem>
-        </Col>
+        <!-- </Col> -->
       </Row>
     </Form>
     <div>
@@ -57,13 +57,19 @@
 </template>
 <script>
 import { tbYxkcList } from '../js/yxkc'
+import moment from 'moment'
 
 export default {
   data() {
+    const param = this.$route.query,
+          startTime = param.start,
+          endTime = param.end
     const pageSize = this.limit
     const pageOffset = this.offset
     const total = tbYxkcList.data1.length
     return {
+      startTime:startTime,
+      endTime:endTime,
       // 下拉列表数据
       xyList: [
         {value:1,label:'学院一'},
@@ -83,10 +89,15 @@ export default {
       total: total || 12,
       limit: parseInt(pageSize) || 10, // 每页条数
       offset: parseInt(pageOffset) || 0, // 每页的查询索引
+      // 根据首页选择日期现在本页面日期选择器
+      dateOptions: {
+        disabledDate (date) {
+          return date && ((date.valueOf() > moment(endTime)) || (date.valueOf() < moment(startTime))); 
+        }
+      },
     }
   },
   mounted() {
-    document.getElementsByClassName('select')[0].style.display='none'
   },
   methods: {
     getList() {
