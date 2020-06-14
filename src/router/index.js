@@ -22,6 +22,7 @@ import Jxzy from '@/components/jxzy'
 Vue.use(Router)
 
 export default new Router({
+  base: "/",
   routes: [
     {
       path: '/',

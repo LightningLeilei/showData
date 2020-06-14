@@ -14,9 +14,9 @@
           <span style="font-size:16px;float:right;margin:5px 10px">请选择时间段</span>
         </Col>
         <Col span="6">
-          <Select style="width:240px" v-model="time_selected" @on-change="changeDate">
+          <Select style="width:240px" id="timeSelected" v-model="time_selected" @on-change="changeDate">
             <Option value="1">昨日</Option>
-            <Option value="2">近7日</Option>
+            <Option value="2" selected="selected">近7日</Option>
             <Option value="3">近30日</Option>
             <Option value="4">自定义</Option>
           </Select>
@@ -39,18 +39,15 @@
       <Button style="background-color:#3cd7b8;" @click="jumptoHybj" id="hybj">活跃班级<div>{{total_btn.hybj}}</div></Button>
       <Button style="background-color:#f6b37f;" @click="jumptoJxhd" id="jxhd">教学互动<div>{{total_btn.jxhd}}</div></Button>
       <Button style="background-color:#8f9ae9;" @click="jumptoJxzy" id="jxzy">教学资源<div>{{total_btn.jxzy}}</div></Button>
-
       <!-- <Button style="background-color:#fb6e52;" to="./yxkc">运行课程<div>{{55}}</div></Button> -->
-
     </Row>
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />各院系运行课程</div>
       <Row>
         <Col span="12">
           <!-- <p>{{selfDate}}时段内运行课程排行前列的学院统计如图所示，其中运行量最高的学院为{{strings}}学院、{{strings}}学院、{{strings}}学院、{{strings}}学院和{{strings}}学院。</p> -->
-
           <span>{{selfDate}}时段内运行课程排行前列的学院统计如图所示，其中运行量最高的学院为</span>
-          <span v-for="(item,idx) in total_yxkc.data1" :key ="idx" >{{item.value}}学院</span>
+          <span v-for="(item,idx) in total_yxkc.data1" :key ="idx" >{{item.value}},</span>
         </Col>
         <Col span="12">
           <div id="map" style="height:300px"></div>
@@ -73,7 +70,8 @@
       <div class="cardTitle"><Icon type="ios-square" />教学资源</div>
       <Row>
         <Col span="12">
-          <p>{{selfDate}}时段内各课程教学资源上传数量如图所示，其中教学资源上传数量最多的课程为{{strings}}，{{strings}}，     ，{{strings}}和{{strings}}。 </p>
+          <span>{{selfDate}}时段内各课程教学资源上传数量如图所示，其中教学资源上传数量最多的课程为</span>
+          <span v-for="(item,idx) in total_jxzy.data1" :key ="idx" >{{item.value}},</span>
         </Col>
         <Col span="12">
           <div id="map2" style="height:300px"></div>
@@ -87,7 +85,7 @@
           <div id="map3" style="height:300px"></div>
         </Col>
         <Col span="12">
-          <p>{{selfDate}}时段内教学过程中平均到课率为{{num}}，具体到课率统计如图所示。 </p>
+          <p>{{selfDate}}时段内教学过程中平均到课率为{{total_dkl.counts}}，具体到课率统计如图所示。 </p>
         </Col>
       </Row>
     </Card>
@@ -95,7 +93,10 @@
       <div class="cardTitle"><Icon type="ios-square" />最受欢迎课程</div>
       <Row>
         <Col span="12">
-          <p>{{selfDate}}时段内最受学生们欢迎的课程为{{strings}}、{{strings}}、{{strings}}、{{strings}}和{{strings}}。参与学生人数较多的课程与其参与人次如图所示。 </p>
+         <p>
+         <span>{{selfDate}}时段内最受学生们欢迎的课程为</span>
+          <span v-for="(item,idx) in total_hykc.data1" :key ="idx" >{{item.value}},</span>
+          参与学生人数较多的课程与其参与人次如图所示。</p>
         </Col>
         <Col span="12">
           <div id="map4" style="height:300px"></div>
@@ -104,7 +105,7 @@
     </Card>
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />学习空间（学习通）</div>
-      <p>学习空间（学习通）共运行课程{{num}}门，平均每日运行课程{{num}}门，活跃教师{{num}}人，平均每日活跃教师{{num}}人，活跃学生{{num}}人，平均每日活跃学生{{num}}人。详细情况如下表所示: </p>
+      <p>学习空间（学习通）共运行课程{{total_xxkj.yxkcAll}}门，平均每日运行课程{{total_xxkj.yxkc}}门，活跃教师{{total_xxkj.hyjsAll}}人，平均每日活跃教师{{total_xxkj.hyjs}}人，活跃学生{{total_xxkj.hyxsAll}}人，平均每日活跃学生{{total_xxkj.hyxs}}人。详细情况如下表所示: </p>
       <!-- <div style="width:80%"> -->
         <Row type="flex" justify="center">
           <Col span="4"></Col>
@@ -112,42 +113,18 @@
             <Table border stripe :columns="XxkjTable.columns1" :data="XxkjTable.data1"/>
           </Col>
           <Col span="4"></Col>
-          <!-- <Page
-            :total="total"
-            ref="pager"
-            :page-size="limit"
-            :page-size-opts="[10,30,50]"
-            show-elevator
-            show-total
-            show-sizer
-            placement="top"
-            @on-change="changePage"
-            @on-page-size-change="changePageSize"
-          ></Page> -->
         </Row>
       <!-- </div> -->
     </Card>
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />雨课堂</div>
-      <p>雨课堂共运行课程{{num}}门，平均每日运行课程{{num}}门，活跃教师{{num}}人，平均每日活跃教师{{num}}人，活跃学生{{num}}人，平均每日活跃学生{{num}}人。详细情况如下表所示: </p>
+      <p>雨课堂共运行课程{{total_ykt.yxkcAll}}门，平均每日运行课程{{total_ykt.yxkc}}门，活跃教师{{total_ykt.hyjsAll}}人，平均每日活跃教师{{total_ykt.hyjs}}人，活跃学生{{total_ykt.hyxsAll}}人，平均每日活跃学生{{total_ykt.hyxs}}人。详细情况如下表所示: </p>
         <Row type="flex" justify="center">
           <Col span="4"></Col>
           <Col span="16">
         <Table border stripe  :columns="YktTable.columns1" :data="YktTable.data1"/>
         </Col>
           <Col span="4"></Col>
-          <!-- <Page
-            :total="total"
-            ref="pager"
-            :page-size="limit"
-            :page-size-opts="[10,30,50]"
-            show-elevator
-            show-total
-            show-sizer
-            placement="top"
-            @on-change="changePage"
-            @on-page-size-change="changePageSize"
-          ></Page> -->
         </Row>
       </Card>
     <Card :bordered="false">
@@ -194,53 +171,73 @@ export default {
       endTime:'',
       // 最上方统计数据
       totalAll:{ 
-        kc_total: 100,
-        xx_kc: 100,
-        ykt_kc: 100,
-        js_total: 101,
-        xx_js: 101,
-        ykt_js: 101,
-        xs_total: 102,
-        xx_xs: 102,
-        ykt_xs: 102
+        kc_total: '',
+        xx_kc: '',
+        ykt_kc: '',
+        js_total: '',
+        xx_js: '',
+        ykt_js: '',
+        xs_total: '',
+        xx_xs: '',
+        ykt_xs: '',
       },
       // 下钻页面入口按钮 统计数据
       total_btn:{
-        yxkc: 10,
-        hyjs: 11,
-        hyxs: 12,
-        hybj: 13,
-        jxhd: 14,
-        jxzy: 15
+        yxkc: '',
+        hyjs: '',
+        hyxs: '',
+        hybj: '',
+        jxhd: '',
+        jxzy: ''
       },
       // 各院系运行课程 统计数据
       total_yxkc:{
         data1:[{
-          label:1,
-          value:'sx'
-          },
-          {
-          label:2,
-          value:'yw'
-          },
-          {
-          label:2,
-          value:'enl'
+          label:'',
+          value:''
           }
         ]
       },
       // 教学互动 统计数据
       total_jxhd:{
-        counts: 0
+        counts: ''
       },
       // 教学资源 统计数据
-      total_jxzy:{},
-
+      total_jxzy:{
+        data1:[
+          {
+          label:'',
+          value:''
+          }
+        ]
+      },
       // 到课率 统计数据
-      total_dkl:{},
-
+      total_dkl:{
+         counts: ''
+      },
       // 最受欢迎课程 统计数据
-      total_hykc:{},
+      total_hykc:{
+        data1:[
+        ]
+      },
+      //学习空间（学习通）
+      total_xxkj:{ 
+        yxkcAll: '',
+        yxkc: '',
+        hyjsAll: '',
+        hyjs: '',
+        hyxsAll: '',
+        hyxs: '',
+      },
+      //雨课堂
+      total_ykt:{ 
+        yxkcAll: '',
+        yxkc: '',
+        hyjsAll: '',
+        hyjs: '',
+        hyxsAll: '',
+        hyxs: '',
+      },
       strings: 'here',
       total: 7,
       // limit: parseInt(pageSize) || 10, // 每页条数
@@ -258,6 +255,7 @@ export default {
   },
   mounted() {
     this.echartsGeo()
+    this.changeDate(2)
     // console.log(this.$router.currentRoute)  // 获取当前路由
   },
   methods: {
@@ -277,39 +275,137 @@ export default {
         // 处理“近X天”的日期，end时间为昨日
         this.startTime = moment().subtract(tempD,'d').format("YYYY-MM-DD")
         this.endTime = moment().subtract(1,'d').format("YYYY-MM-DD")
-        console.log(this.startTime)
-        console.log(this.endTime)
-        // ---------- 随后调用更新整个页面数据的方法this.updateIndexData(this.startTime,this.endTime)
-      }
-    
+        this.selfDate[0] = this.startTime
+        this.selfDate[1] = this.endTime
+        console.log("hhhhhh")
+        //window.location.reload()
+        //selfDate需要处理
+        //更新整个页面数据的方法(遗留问题：数据可以获取但无法页面更新)
+        this.updateIndexData(this.startTime,this.endTime)       
+      } 
     },
-    updateIndexData(start,end) {
-      //数据传输
-      $.ajax({
-        type : "POST",
-        url : "/zxjx/teach-active/runCourse?startTime="+start+"&endTime="+end+"",
-        data : {
-            //id : id,
-        },
-        success : function(data) {
-            alert(data);
-        },
-        error : function(){
-            alert("错误");
+    updateIndexData(start,end){
+      let _self = this;
+    //获得主页面最顶部概括介绍中的数据，其中funN按所需数据的顺序命名
+    //遗留问题：fun13在postman中调试可以拿到，这里会调用失败
+    var fun1 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/runCourse/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun2 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/runTeacherNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun3 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runStudentNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun4 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/getRunCourseAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun5 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/getRunTeacherAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun6 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runXxkjAvgStudentNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun7 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/getYKTCourseAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun8 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/getYKTTeacherAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun9 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runYktAvgStudentNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        //各院系运行课程的数据获取：返回的数据类型为二维数组
+        fun10 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/getRunCourseXYFq/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        //教学互动
+        fun11 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runAvgHdNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        //教学资源
+        fun12 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-resource/runMaxCourseFiveNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        //到课率
+        //fun13 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runAvgDkl/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        //最受欢迎课程
+        fun14 = $.ajax({url: "http://127.0.0.1:8081/zxjx/course-info/popCourseName/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        //学习空间（学习通）
+        //fun14 = $.ajax({url: "http://127.0.0.1:8081/zxjx/course-info/popCourseName/"+start+"/"+end+"",type:'POST',dataType:'JSON'});
+        //教学互动图表数据
+        fun15 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runEveryDayHdNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        //教学资源图表数据
+        fun16 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-resource/runCourseResourceNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+         //到课率图表数据
+        fun17 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runEveryDayAvgDkl/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        //学习空间（学习通）
+        fun18 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/getCxxCourseTeacher/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun19 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runSumAndAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        //fun20 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        // //学习空间（学习通）表格数据
+        fun21 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/getBiaoCxx192/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        //雨课堂
+        fun22 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/getYctCourseTeacher/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun23 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runYctSumAndAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun24 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runYctSumAndAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        //雨课堂表格数据
+        fun25 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/getBiaoYct1002/"+start+"/"+end+"",type:'POST',dataType:'JSON'});
+      $.when(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,fun9,fun10,fun11,fun12,fun14,fun15,fun16,fun17,fun18,fun19,fun21,fun22,fun23,fun24,fun25).then(function(data1,data2,data3,data4,data5,data6,data7,data8,data9,data10,data11,data12,data14,data15,data16,data17,data18,data19,data21,data22,data23,data24,data25){
+        //首页面下钻按钮的赋值
+        _self.total_btn.yxkc=data1[0];
+        _self.total_btn.hyjs=data2[0];
+        _self.total_btn.hyxs=data3[0];
+        //_self.total_btn.hybj
+        _self.total_btn.jxhd=data11[0];
+        //_self.total_btn.jxzy
+        //成功回调，所有请求正确返回时调用，完成相应赋值
+        _self.totalAll.kc_total=data1[0];
+        _self.totalAll.js_total=data2[0];
+        _self.totalAll.xs_total=data3[0];
+        _self.totalAll.xx_kc=data4[0];
+        _self.totalAll.xx_js=data5[0];
+         _self.totalAll.xx_xs=data6[0];
+        _self.totalAll.ykt_kc=data7[0];
+        _self.totalAll.ykt_js=data8[0];
+        _self.totalAll.ykt_xs=data9[0];
+        _self.total_jxhd.counts=data11[0];
+        // console.log(data21)
+        _self.total_xxkj.yxkcAll=data18[0][0].ckc;
+        _self.total_xxkj.yxkc=data18[0][0].avgckc;
+        _self.total_xxkj.hyjsAll=data18[0][0].tzrs;
+        _self.total_xxkj.hyjs=data18[0][0].avgtrs;
+        _self.total_xxkj.hyxsAll=data19[0];   
+        // _self.total_xxkj.hyxs=data20[0];
+        _self.total_ykt.yxkcAll=data22[0][0].ckc;
+        _self.total_ykt.yxkc=data22[0][0].avgckc;
+        _self.total_ykt.hyjsAll=data22[0][0].tzrs;
+        _self.total_ykt.hyjs=data22[0][0].avgtrs;
+        _self.total_ykt.hyxsAll=data23[0];
+        _self.total_ykt.hyxs=data24[0];     
+        // //遗留问题，表格赋值第一行空白
+        for(var i=0;i<data21[0].length;i++){
+            _self.XxkjTable.data1.push(data21[0][i])
         }
-      });
-
+        for(var i=0;i<data25[0].length;i++){
+            _self.YktTable.data1.push(data25[0][i])
+        }
+        //console.log(_self.YktTable.data1)
+        console.log(data25)   
+        //_self.total_dkl.counts=data13[0];
+        //各院系运行课程、教学资源、最受欢迎课程模块的赋值
+        _self.total_yxkc.data1=[]
+        _self.total_jxzy.data1=[]
+        _self.total_hykc.data1=[]
+        //各院系运行课程文字描述部分赋值
+          for(let i=0;i<9&&i<data10[0].length;i++){
+              _self.total_yxkc.data1.push({
+                label:data10[0][i].pl,
+                value:data10[0][i].xymc
+              })
+            }
+            _self.echartsGeo(data10,data14,data15,data16,data17)            
+           for(let i=0;i<5&&i<data12[0].length;i++){
+              _self.total_jxzy.data1.push({
+              label:data12[0][i].zysl,
+              value:data12[0][i].kcmc
+            })
+          }
+            for(let i=0;i<5&&i<data10[0].length;i++){
+                _self.total_hykc.data1.push({
+                  label:data14[0][i].zrs,
+                  value:data14[0][i].kcmc
+                })
+            }
+    },function(){
+        //失败回调，任意一个请求失败时返回
+        console.log('getDataError');
+    })  
     },
     // 自定义日期
     changeDateSelf(d) {
-      // alert(d[0])
-      // alert('7d before'+ moment(d[0]).subtract(7,'d').format("YYYY-MM-DD"))
       this.startTime = moment(d[0]).format("YYYY-MM-DD")
       this.endTime = moment(d[1]).format("YYYY-MM-DD")
-      // alert("startime"+this.selfDate[0])
-      console.log(this.startTime)
-      console.log(this.endTime)
-      // ---------- 随后调用更新整个页面数据的方法
+      this.selfDate[0] = this.startTime
+      this.selfDate[1] = this.endTime
+      //this.selfDate = this.startTime.toString()+this.endTime.toString();
+      this.updateIndexData(this.startTime,this.endTime)
     },
     // 带日期跳转
     jumptoYxkc() {
@@ -317,69 +413,68 @@ export default {
         start:this.startTime,
         end:this.endTime
       }
-      this.$router.push({
+      let newjumptoYxkc = this.$router.resolve({
         path: '/yxkc',
         query: params
       })
+      window.open(newjumptoYxkc.href,'_blank');
     },
     jumptoHyjs() {
-      this.$router.push({
+      let newjumptoHyjs = this.$router.resolve({
         path: '/hyjs'
       })
+      window.open(newjumptoHyjs.href,'_blank');
     },
     jumptoHyxs() {
-      this.$router.push({
+      let newjumptoHyxs = this.$router.resolve({
         path: '/hyxs'
       })
+      window.open(newjumptoHyxs.href,'_blank');
     },
     jumptoHybj() {
-      this.$router.push({
+      let newjumptoHybj = this.$router.resolve({
         path: '/hybj'
       })
+      window.open(newjumptoHybj.href,'_blank');
     },
     jumptoJxhd() {
-      this.$router.push({
+      let newjumptoJxhd = this.$router.resolve({
         path: '/jxhd'
       })
+      window.open(newjumptoJxhd.href,'_blank');
     },
     jumptoJxzy() {
-      this.$router.push({
+      let newjumptoJxzy = this.$router.resolve({
         path: '/jxzy'
       })
+      window.open(newjumptoJxzy.href,'_blank');
     },
-    echartsGeo() {
+    echartsGeo(data10,data14,data15,data16,data17) {
       let echarts = require('echarts')
       let myChart = echarts.init(document.getElementById('map'))
       let myChart1 = echarts.init(document.getElementById('map1'))
       let myChart2 = echarts.init(document.getElementById('map2'))
       let myChart3 = echarts.init(document.getElementById('map3'))
       let myChart4 = echarts.init(document.getElementById('map4'))
-
-
       let option = {
         dataset: {
           source: [
-            [ 'amount', 'product'],
-            [ 58212, 'Matcha Latte'],
-            [ 78254, 'Milk Tea'],
-            [ 41032, 'Cheese Cocoa'],
-            [ 12755, 'Cheese Brownie'],
-            [ 20145, 'Matcha Cocoa'],
-            [ 79146, 'Tea'],
-            [ 91852, 'Orange Juice'],
-            [ 101852, 'Lemon Juice'],
-            [ 20112, 'Walnut Brownie']
+             [ 'amount', 'product']
           ]
         },
         grid: {containLabel: true},
-        xAxis: {name: 'amount'},
-        yAxis: {type: 'category'},
+        xAxis: {
+          //name: '数量'
+        },
+        yAxis: {
+           type: 'category'
+        },
         visualMap: {
           // 视觉效果数值以横坐标amount为基准
           orient: 'horizontal',
           left: 'center',
-          min: 10000,
-          max: 100000,
+          min: 0,
+          max: 500,
           text: ['High Score', 'Low Score'],
           // Map the score column to color
           dimension: 0,
@@ -395,11 +490,11 @@ export default {
               x: 'amount',
               // Map the "product" column to Y axis
               y: 'product'
-            }
+            },
           }
         ]
-      };
-
+      
+    };
       let option1 = {
         xAxis: {
           type: 'category',
@@ -436,25 +531,15 @@ export default {
             markLine: {
               symbol: ['none', 'none'],
               label: {show: false},
+              lineStyle:{
+                color:'green',
+                width:1.5
+              },
               data: [
-                {xAxis: 1},
-                {xAxis: 3},
-                {xAxis: 5},
-                {xAxis: 7}
-              ]
+             ]
             },
             areaStyle: {},
-            data: [
-              ['2019-10-10', 200],
-              ['2019-10-11', 400],
-              ['2019-10-12', 650],
-              ['2019-10-13', 500],
-              ['2019-10-14', 250],
-              ['2019-10-15', 300],
-              ['2019-10-16', 450],
-              ['2019-10-17', 300],
-              ['2019-10-18', 100]
-            ]
+            data: []
           }
         ]
       };
@@ -462,36 +547,85 @@ export default {
         color: ['#3398DB'],
         xAxis: {
             type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            data: []
         },
         yAxis: {
             type: 'value'
         },
         series: [{
-            data: [120, 200, 150, 80, 70, 110, 130],
-            type: 'bar'
+          type: 'bar',
+            data: []
         }]
       };
       let option3 = {
         xAxis: {
             type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            data: []
         },
         yAxis: {
             type: 'value'
         },
         series: [{
-            data: [120, 200, 150, 80, 70, 110, 130],
+            data: [],
             type: 'line',
             areaStyle: {}
         }]
       };
-      myChart.setOption(option)
-      myChart1.setOption(option1)
-      myChart2.setOption(option2)
-      myChart3.setOption(option3)
-      myChart4.setOption(option2)
-
+      let option4 = {
+        color: ['#3398DB'],
+        xAxis: {
+            type: 'category',
+            data: []
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+          type: 'bar',
+            data: []
+        }]
+      };
+    //第一个图形的加载
+    //图中数据的填充
+    myChart.showLoading(); // 数据加载完之前先显示一段简单的loading动画
+    myChart1.showLoading();
+    myChart2.showLoading();
+    myChart3.showLoading();
+    myChart4.showLoading();
+    var item_kcmc =[]
+    var item_zysl =[]
+    if (data10&&data14&&data15&&data16) {
+        data10[0].forEach(item => {
+          option.dataset.source.push([item.pl,item.xymc])
+        });
+        data15[0].forEach(item => {
+          option1.series[0].data.push([item.cysj,item.hd])
+        });
+        data16[0].forEach(item => {
+          option2.xAxis.data.push(item.kcmc)
+          option2.series[0].data.push(item.zysl)
+        });
+        data17[0].forEach(item => {
+          option3.xAxis.data.push(item.hdsj)
+          let temp = item.pjedaydkl
+          let temp1 = temp.split('.')
+          option3.series[0].data.push(temp1[0])
+        });
+        data14[0].forEach(item => {
+          option4.xAxis.data.push(item.kcmc)
+          option4.series[0].data.push(item.zrs)
+        });
+        myChart.hideLoading(); // 隐藏加载动画
+        myChart1.hideLoading(); 
+        myChart2.hideLoading(); 
+        myChart3.hideLoading(); 
+        myChart4.hideLoading(); 
+        myChart.setOption(option)   //加载数据图表
+        myChart1.setOption(option1)
+        myChart2.setOption(option2)
+        myChart3.setOption(option3)
+        myChart4.setOption(option4)
+    }
     },
     changePage (d) {
         let self = this

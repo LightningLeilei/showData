@@ -20,42 +20,32 @@ export const tbXxkjList = {
     {
       title: '日期',
       align: 'center',
-      key: 'modifyTime'
+      key: 'hdsj'
     },
     {
       title: '运行课程',
       // width: 200,
       align: 'center',
-      key: 'patName'
+      key: 'fqrrs'
     },
     {
       title: '活跃教师',
       align: 'center',
-
-      key: 'patNumber'
+      key: 'xhrs'
     },
     {
       title: '活跃学生',
       align: 'center',
-
-      key: 'patNumber'
+      key: 'hdlx'
     },
     {
       title: '教学互动',
       align: 'center',
-
-      key: 'patNumber'
+      key: 'zyzs'
     }],
-  data1:[{
-    modifyTime: '2020-05-05',
-    patName: '43',
-    patNumber: '35'
-  },
-  {
-    modifyTime: '2020-05-06',
-    patName: '54',
-    patNumber: '54'
-  }]
+  data1:[
+
+]
 }
 
 export const tbYktList = {
@@ -63,48 +53,34 @@ export const tbYktList = {
     {
       title: '日期',
       align: 'center',
-
-      key: 'modifyTime'
+      key: 'hdsj'
     },
     {
       title: '运行课程',
       align: 'center',
-
-      key: 'patName'
+      key: 'fqrrs'
     },
     {
       title: '活跃教师',
       align: 'center',
-
-      key: 'patNumber'
+      key: 'xhrs'
     },
     {
       title: '活跃学生',
       align: 'center',
-
-      key: 'patNumber'
+      key: 'hdlx'
     },
     {
       title: '教学互动',
       align: 'center',
-
-      key: 'patNumber'
+      key: 'zyzs'
     },
     {
       title: '教学资源',
       align: 'center',
-
-      key: 'patNumber'
+      key: 'temp'
     }],
-  data1:[{
-    modifyTime: '2020-05-05',
-    patName: '43',
-    patNumber: '35'
-  },
-  {
-    modifyTime: '2020-05-06',
-    patName: '54',
-    patNumber: '54'
-  }]
+  data1:[
+]
 }
 
