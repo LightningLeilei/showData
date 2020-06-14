@@ -2,11 +2,11 @@
  * @Author: liuyixue
  * @Date: 2019-07-01 09:56:18
  * @LastEditors: liuyixue
- * @LastEditTime: 2020-05-25 18:33:23
+ * @LastEditTime: 2020-06-14 17:21:10
  * @Description: file content
  -->
 <template>
-  <div class="hello">
+  <div class="hello" id="pdfDOM">
     <div class="select" style="margin:10px">
       <Row type="flex" justify="center" >
         <Col span="4"></Col>
@@ -39,9 +39,6 @@
       <Button style="background-color:#3cd7b8;" @click="jumptoHybj" id="hybj">活跃班级<div>{{total_btn.hybj}}</div></Button>
       <Button style="background-color:#f6b37f;" @click="jumptoJxhd" id="jxhd">教学互动<div>{{total_btn.jxhd}}</div></Button>
       <Button style="background-color:#8f9ae9;" @click="jumptoJxzy" id="jxzy">教学资源<div>{{total_btn.jxzy}}</div></Button>
-
-      <!-- <Button style="background-color:#fb6e52;" to="./yxkc">运行课程<div>{{55}}</div></Button> -->
-
     </Row>
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />各院系运行课程</div>
@@ -50,7 +47,7 @@
           <!-- <p>{{selfDate}}时段内运行课程排行前列的学院统计如图所示，其中运行量最高的学院为{{strings}}学院、{{strings}}学院、{{strings}}学院、{{strings}}学院和{{strings}}学院。</p> -->
 
           <span>{{selfDate}}时段内运行课程排行前列的学院统计如图所示，其中运行量最高的学院为</span>
-          <span v-for="(item,idx) in total_yxkc.data1" :key ="idx" >{{item.value}}学院</span>
+          <span v-for="(item,idx) in total_yxkc.data1" :key ="idx" >{{item.value}}学院、</span>
         </Col>
         <Col span="12">
           <div id="map" style="height:300px"></div>
@@ -73,7 +70,8 @@
       <div class="cardTitle"><Icon type="ios-square" />教学资源</div>
       <Row>
         <Col span="12">
-          <p>{{selfDate}}时段内各课程教学资源上传数量如图所示，其中教学资源上传数量最多的课程为{{strings}}，{{strings}}，     ，{{strings}}和{{strings}}。 </p>
+          <span>{{selfDate}}时段内各课程教学资源上传数量如图所示，其中教学资源上传数量最多的课程为</span>
+          <span v-for="(item,idx) in total_jxzy.data1" :key ="idx" >{{item.value}}、</span>
         </Col>
         <Col span="12">
           <div id="map2" style="height:300px"></div>
@@ -172,15 +170,15 @@
 <script>
 import moment from 'moment'
 import { tbXxkjList,tbYktList } from '../js/tables'
+// import { jsPDF } from '../js/jspdf.min.js'
+import html2Canvas from 'html2canvas'
+import jsPDF from 'jspdf'
+
 //外部引入js变量
 export default {
   name: 'HelloWorld',
   data () {
     const today = moment()
-    // const checkInfoList = checkInfoListFunc(this)
-    // const pageSize = this.limit
-    // const pageOffset = this.offset
-    // const total = checkInfoList.data1.length
     return {
       today,
       //newData:time.timeData(),
@@ -234,7 +232,9 @@ export default {
         counts: 0
       },
       // 教学资源 统计数据
-      total_jxzy:{},
+      total_jxzy:{
+        data1:[]
+      },
 
       // 到课率 统计数据
       total_dkl:{},
@@ -258,9 +258,80 @@ export default {
   },
   mounted() {
     this.echartsGeo()
-    // console.log(this.$router.currentRoute)  // 获取当前路由
   },
   methods: {
+    convertImgToBase64 (url, callback, outputFormat) {
+      let canvas = document.createElement('CANVAS')
+      let ctx = canvas.getContext('2d')
+      let img = new Image()
+      img.crossOrigin = 'Anonymous'
+      img.onload = function () {
+        canvas.height = img.height
+        canvas.width = img.width
+        ctx.drawImage(img, 0, 0)
+        let dataURL = canvas.toDataURL(outputFormat || 'image/jpeg')
+        callback.call(this, dataURL)
+        canvas = null
+      }
+      img.src = url
+      console.log('convertImgToBase64')
+    },
+    getPdf (pdfDom) {
+      let title = this.htmlTitle
+      html2Canvas(pdfDom, {
+        allowTaint: true
+      }).then(function (canvas) {
+        let contentWidth = canvas.width
+        let contentHeight = canvas.height
+        let pageHeight = contentWidth / 592.28 * 841.89
+        let leftHeight = contentHeight
+        let position = 0
+        let imgWidth = 595.28
+        let imgHeight = 592.28 / contentWidth * contentHeight
+        let pageData = canvas.toDataURL('image/jpeg', 1.0)
+        let PDF = new JsPDF('', 'pt', 'a4')
+        if (leftHeight < pageHeight) {
+          PDF.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight)
+        } else {
+          while (leftHeight > 0) {
+            PDF.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
+            leftHeight -= pageHeight
+            position -= 841.89
+            if (leftHeight > 0) {
+              PDF.addPage()
+            }
+          }
+        }
+        PDF.save(title + '.pdf')
+      })
+    },
+    getBase64Pdf () {
+      let _this = this
+      this.convertImgToBase64(this.imgSrc, function (base64ImgSrc) {
+        console.log('here')
+        _this.$refs.img1.src = base64ImgSrc
+        let pdfDom = _this.$refs.pdfDom
+        _this.getPdf(pdfDom)
+      })
+    },
+    getOptionsData() {
+      let res = [
+        {xymc:'经济',pl:'52'},
+        {xymc:'化工',pl:'39'}
+        ]
+      this.total_yxkc.data1 = []
+      for(let i=0; i< res.length;i++){
+        this.total_yxkc.data1.push({
+          label:res[i].pl,
+          value:res[i].xymc
+        })
+        this.total_jxzy.data1.push({
+          label:res[i].pl,
+          value:res[i].xymc
+        })
+        
+      }
+    },
     // 日期下拉菜单
     changeDate(val) {
       let tempD
@@ -354,22 +425,20 @@ export default {
       let myChart2 = echarts.init(document.getElementById('map2'))
       let myChart3 = echarts.init(document.getElementById('map3'))
       let myChart4 = echarts.init(document.getElementById('map4'))
-
+      let tempData = [
+        {xymc:'经济',pl:'52'},
+        {xymc:'化工',pl:'39'},
+        {xymc:'科学',pl:'32'},
+        {xymc:'软件',pl:'82'},
+        {xymc:'语文',pl:'157'},
+        {xymc:'数学',pl:'73'},
+        {xymc:'自然',pl:'30'},
+        {xymc:'地理',pl:'112'}
+        ]
 
       let option = {
         dataset: {
-          source: [
-            [ 'amount', 'product'],
-            [ 58212, 'Matcha Latte'],
-            [ 78254, 'Milk Tea'],
-            [ 41032, 'Cheese Cocoa'],
-            [ 12755, 'Cheese Brownie'],
-            [ 20145, 'Matcha Cocoa'],
-            [ 79146, 'Tea'],
-            [ 91852, 'Orange Juice'],
-            [ 101852, 'Lemon Juice'],
-            [ 20112, 'Walnut Brownie']
-          ]
+          source: [['amount', 'product']]
         },
         grid: {containLabel: true},
         xAxis: {name: 'amount'},
@@ -378,9 +447,9 @@ export default {
           // 视觉效果数值以横坐标amount为基准
           orient: 'horizontal',
           left: 'center',
-          min: 10000,
-          max: 100000,
-          text: ['High Score', 'Low Score'],
+          min: 0,
+          max: 100,
+          text: ['少数', '多数'],
           // Map the score column to color
           dimension: 0,
           inRange: {
@@ -399,7 +468,6 @@ export default {
           }
         ]
       };
-
       let option1 = {
         xAxis: {
           type: 'category',
@@ -414,15 +482,7 @@ export default {
           show: false,
           dimension: 0,
           seriesIndex: 0,
-          pieces: [{
-            gt: 1,
-            lt: 3,
-            color: 'rgba(0, 180, 0, 0.5)'
-          }, {
-            gt: 5,
-            lt: 7,
-            color: 'rgba(0, 180, 0, 0.5)'
-          }]
+          pieces: []
         },
         series: [
           {
@@ -436,25 +496,14 @@ export default {
             markLine: {
               symbol: ['none', 'none'],
               label: {show: false},
-              data: [
-                {xAxis: 1},
-                {xAxis: 3},
-                {xAxis: 5},
-                {xAxis: 7}
-              ]
+              lineStyle:{
+                color:'green',
+                width: 1.5
+              },
+              data: []
             },
             areaStyle: {},
-            data: [
-              ['2019-10-10', 200],
-              ['2019-10-11', 400],
-              ['2019-10-12', 650],
-              ['2019-10-13', 500],
-              ['2019-10-14', 250],
-              ['2019-10-15', 300],
-              ['2019-10-16', 450],
-              ['2019-10-17', 300],
-              ['2019-10-18', 100]
-            ]
+            data: []
           }
         ]
       };
@@ -462,13 +511,18 @@ export default {
         color: ['#3398DB'],
         xAxis: {
             type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            // boundaryGap:false,
+            axisLabel:{
+              interval: 0,
+              rotate: 50
+            }, 
+            data: ['yi超级长的名字', 'Tue长机场', '长名字第三个', 'Thu', 'Fri', 'Sat', 'Sun']
         },
         yAxis: {
             type: 'value'
         },
         series: [{
-            data: [120, 200, 150, 80, 70, 110, 130],
+            data: ['120', '200', '150', '80', '70', '110', '130'],
             type: 'bar'
         }]
       };
@@ -486,6 +540,19 @@ export default {
             areaStyle: {}
         }]
       };
+      tempData.forEach(item => {
+        option.dataset.source.push([item.pl,item.xymc]);
+        option1.series[0].data.push([item.xymc,item.pl]);
+      });
+      for(let i=0; i <tempData.length; i=i+2){
+        option1.visualMap.pieces.push({
+          gt: i+1,
+          lt: i+2,
+          color: 'rgba(100, 180, 0, 0.8)'
+        })
+        option1.series[0].markLine.data.push({xAxis:i},{xAxis: i+1})
+      }
+      console.log(option2.series[0].data)
       myChart.setOption(option)
       myChart1.setOption(option1)
       myChart2.setOption(option2)
@@ -506,7 +573,7 @@ export default {
       }
     },
     exportReport() {
-      alert('还未实现')
+      // this.getBase64Pdf()
     }
   },
 }
