@@ -2,31 +2,31 @@
  * @Author: liuyixue
  * @Date: 2019-07-01 09:56:18
  * @LastEditors: liuyixue
- * @LastEditTime: 2020-05-25 18:33:23
+ * @LastEditTime: 2020-06-14 22:49:32
  * @Description: file content
  -->
 <template>
   <div class="hello">
     <div class="select" style="margin:10px">
       <Row type="flex" justify="center" >
-        <Col span="4"></Col>
-        <Col span="4">
+        <Col :xs="24" :sm="24" :md="24" :lg="4"></Col>
+        <Col :xs="20" :sm="24" :md="20" :lg="4">
           <span style="font-size:16px;float:right;margin:5px 10px">请选择时间段</span>
         </Col>
-        <Col span="6">
-          <Select style="width:240px" id="timeSelected" v-model="time_selected" @on-change="changeDate">
+        <Col :xs="20" :sm="24" :md="12" :lg="6">
+          <Select style="width:240px;margin-right:30px" id="timeSelected" v-model="time_selected" @on-change="changeDate">
             <Option value="1">昨日</Option>
             <Option value="2" selected="selected">近7日</Option>
             <Option value="3">近30日</Option>
             <Option value="4">自定义</Option>
           </Select>
           </Col>
-        <Col span="4">
-          <div id="datePick" style="visibility:hidden;margin-left:30px">
-            <DatePicker style="width:240px" type="daterange" placement="bottom-end" format="yyyy-MM-dd" placeholder="请选择"  @on-change="changeDateSelf" v-model="selfDate"></DatePicker>
+        <Col :xs="20" :sm="24" :md="12" :lg="4">
+          <div id="datePick" style="visibility:hidden">
+            <DatePicker style="width:240px" type="daterange" placement="bottom-end" format="yyyy-MM-dd" placeholder="请选择" :options="optionsForDate"  @on-change="changeDateSelf" v-model="selfDate"></DatePicker>
           </div>
         </Col>
-        <Col span="6"></Col>
+        <Col :xs="20" :sm="24" :md="24" :lg="6"></Col>
       </Row>
     </div>
     <Card :bordered="false">
@@ -44,12 +44,11 @@
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />各院系运行课程</div>
       <Row>
-        <Col span="12">
-          <!-- <p>{{selfDate}}时段内运行课程排行前列的学院统计如图所示，其中运行量最高的学院为{{strings}}学院、{{strings}}学院、{{strings}}学院、{{strings}}学院和{{strings}}学院。</p> -->
+        <Col :xs="24" :sm="24" :md="24" :lg="12">
           <span>{{selfDate}}时段内运行课程排行前列的学院统计如图所示，其中运行量最高的学院为</span>
           <span v-for="(item,idx) in total_yxkc.data1" :key ="idx" >{{item.value}},</span>
         </Col>
-        <Col span="12">
+        <Col :xs="24" :sm="24" :md="24" :lg="12">
           <div id="map" style="height:300px"></div>
         </Col>
       </Row>
@@ -57,23 +56,22 @@
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />教学互动</div>
       <Row>
-        <Col span="12">
-          <div id="map1" style="height:300px"></div>
-        </Col>
-        <Col span="12">
+        <Col :xs="24" :sm="24" :md="24" :lg="12">
           <p>{{selfDate}}时段内教学过程中平均每日互动数量为{{total_jxhd.counts}}次，具体教学互动情况如图所示。</p>
         </Col>
-        
+        <Col :xs="24" :sm="24" :md="24" :lg="12">
+          <div id="map1" style="height:300px"></div>
+        </Col>
       </Row>
     </Card>
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />教学资源</div>
       <Row>
-        <Col span="12">
+        <Col :xs="24" :sm="24" :md="24" :lg="12">
           <span>{{selfDate}}时段内各课程教学资源上传数量如图所示，其中教学资源上传数量最多的课程为</span>
           <span v-for="(item,idx) in total_jxzy.data1" :key ="idx" >{{item.value}},</span>
         </Col>
-        <Col span="12">
+        <Col :xs="24" :sm="24" :md="24" :lg="12">
           <div id="map2" style="height:300px"></div>
         </Col>
       </Row>
@@ -81,24 +79,24 @@
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />到课率</div>
       <Row>
-        <Col span="12">
-          <div id="map3" style="height:300px"></div>
-        </Col>
-        <Col span="12">
+        <Col :xs="24" :sm="24" :md="24" :lg="12">
           <p>{{selfDate}}时段内教学过程中平均到课率为{{total_dkl.counts}}，具体到课率统计如图所示。 </p>
+        </Col>
+        <Col :xs="24" :sm="24" :md="24" :lg="12">
+          <div id="map3" style="height:300px"></div>
         </Col>
       </Row>
     </Card>
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />最受欢迎课程</div>
       <Row>
-        <Col span="12">
+        <Col :xs="24" :sm="24" :md="24" :lg="12">
          <p>
          <span>{{selfDate}}时段内最受学生们欢迎的课程为</span>
           <span v-for="(item,idx) in total_hykc.data1" :key ="idx" >{{item.value}},</span>
           参与学生人数较多的课程与其参与人次如图所示。</p>
         </Col>
-        <Col span="12">
+        <Col :xs="24" :sm="24" :md="24" :lg="12">
           <div id="map4" style="height:300px"></div>
         </Col>
       </Row>
@@ -106,7 +104,6 @@
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />学习空间（学习通）</div>
       <p>学习空间（学习通）共运行课程{{total_xxkj.yxkcAll}}门，平均每日运行课程{{total_xxkj.yxkc}}门，活跃教师{{total_xxkj.hyjsAll}}人，平均每日活跃教师{{total_xxkj.hyjs}}人，活跃学生{{total_xxkj.hyxsAll}}人，平均每日活跃学生{{total_xxkj.hyxs}}人。详细情况如下表所示: </p>
-      <!-- <div style="width:80%"> -->
         <Row type="flex" justify="center">
           <Col span="4"></Col>
           <Col span="16">
@@ -114,7 +111,6 @@
           </Col>
           <Col span="4"></Col>
         </Row>
-      <!-- </div> -->
     </Card>
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />雨课堂</div>
@@ -137,11 +133,11 @@
       </div>
     </Card>
     <Row type="flex" justify="center">
-      <Col span="10"></Col>
-      <Col span="4">
+      <Col :xs="6" :sm="8" :md="8" :lg="10"></Col>
+      <Col :xs="12" :sm="8" :md="8" :lg="4">
         <Button style="background-color:#a40000;width:200px" @click="exportReport">点击导出简报</Button>
       </Col>
-      <Col span="10"></Col>
+      <Col :xs="6" :sm="8" :md="8" :lg="10"></Col>
     </Row>
   </div>
 </template>
@@ -154,15 +150,8 @@ export default {
   name: 'HelloWorld',
   data () {
     const today = moment()
-    // const checkInfoList = checkInfoListFunc(this)
-    // const pageSize = this.limit
-    // const pageOffset = this.offset
-    // const total = checkInfoList.data1.length
     return {
       today,
-      //newData:time.timeData(),
-      // openDateRange:true,
-      // curRouter: this.$router.currentRoute.path,
       num: 99,
       // 选择日期或自定义
       time_selected: 0,
@@ -249,14 +238,17 @@ export default {
       YktTable:{
         columns1: tbYktList.columns1,
         data1: tbYktList.data1
+      },
+      optionsForDate: {
+        disabledDate (date) {
+          return date && date.valueOf() > Date.now();
+        }
       }
-      
     }
   },
   mounted() {
     this.echartsGeo()
     this.changeDate(2)
-    // console.log(this.$router.currentRoute)  // 获取当前路由
   },
   methods: {
     // 日期下拉菜单
@@ -277,11 +269,11 @@ export default {
         this.endTime = moment().subtract(1,'d').format("YYYY-MM-DD")
         this.selfDate[0] = this.startTime
         this.selfDate[1] = this.endTime
-        console.log("hhhhhh")
+        // console.log("hhhhhh")
         //window.location.reload()
         //selfDate需要处理
         //更新整个页面数据的方法(遗留问题：数据可以获取但无法页面更新)
-        this.updateIndexData(this.startTime,this.endTime)       
+        this.updateIndexData(this.startTime,this.endTime)
       } 
     },
     updateIndexData(start,end){
@@ -367,7 +359,7 @@ export default {
             _self.YktTable.data1.push(data25[0][i])
         }
         //console.log(_self.YktTable.data1)
-        console.log(data25)   
+        // console.log(data25)   
         //_self.total_dkl.counts=data13[0];
         //各院系运行课程、教学资源、最受欢迎课程模块的赋值
         _self.total_yxkc.data1=[]
@@ -404,7 +396,6 @@ export default {
       this.endTime = moment(d[1]).format("YYYY-MM-DD")
       this.selfDate[0] = this.startTime
       this.selfDate[1] = this.endTime
-      //this.selfDate = this.startTime.toString()+this.endTime.toString();
       this.updateIndexData(this.startTime,this.endTime)
     },
     // 带日期跳转
@@ -420,32 +411,57 @@ export default {
       window.open(newjumptoYxkc.href,'_blank');
     },
     jumptoHyjs() {
+      const params = {
+        start:this.startTime,
+        end:this.endTime
+      }
       let newjumptoHyjs = this.$router.resolve({
-        path: '/hyjs'
+        path: '/hyjs',
+        query: params
       })
       window.open(newjumptoHyjs.href,'_blank');
     },
     jumptoHyxs() {
+      const params = {
+        start:this.startTime,
+        end:this.endTime
+      }
       let newjumptoHyxs = this.$router.resolve({
-        path: '/hyxs'
+        path: '/hyxs',
+        query: params
       })
       window.open(newjumptoHyxs.href,'_blank');
     },
     jumptoHybj() {
+      const params = {
+        start:this.startTime,
+        end:this.endTime
+      }
       let newjumptoHybj = this.$router.resolve({
-        path: '/hybj'
+        path: '/hybj',
+        query: params
       })
       window.open(newjumptoHybj.href,'_blank');
     },
     jumptoJxhd() {
+      const params = {
+        start:this.startTime,
+        end:this.endTime
+      }
       let newjumptoJxhd = this.$router.resolve({
-        path: '/jxhd'
+        path: '/jxhd',
+        query: params
       })
       window.open(newjumptoJxhd.href,'_blank');
     },
     jumptoJxzy() {
+      const params = {
+        start:this.startTime,
+        end:this.endTime
+      }
       let newjumptoJxzy = this.$router.resolve({
-        path: '/jxzy'
+        path: '/jxzy',
+        query: params
       })
       window.open(newjumptoJxzy.href,'_blank');
     },
@@ -493,8 +509,7 @@ export default {
             },
           }
         ]
-      
-    };
+        };
       let option1 = {
         xAxis: {
           type: 'category',
@@ -541,8 +556,7 @@ export default {
             areaStyle: {},
             data: []
           }
-        ]
-      };
+        ]};
       let option2 = {
         color: ['#3398DB'],
         xAxis: {
@@ -555,8 +569,7 @@ export default {
         series: [{
           type: 'bar',
             data: []
-        }]
-      };
+        }]};
       let option3 = {
         xAxis: {
             type: 'category',
@@ -570,7 +583,7 @@ export default {
             type: 'line',
             areaStyle: {}
         }]
-      };
+        };
       let option4 = {
         color: ['#3398DB'],
         xAxis: {
@@ -584,48 +597,48 @@ export default {
           type: 'bar',
             data: []
         }]
-      };
-    //第一个图形的加载
-    //图中数据的填充
-    myChart.showLoading(); // 数据加载完之前先显示一段简单的loading动画
-    myChart1.showLoading();
-    myChart2.showLoading();
-    myChart3.showLoading();
-    myChart4.showLoading();
-    var item_kcmc =[]
-    var item_zysl =[]
-    if (data10&&data14&&data15&&data16) {
-        data10[0].forEach(item => {
-          option.dataset.source.push([item.pl,item.xymc])
-        });
-        data15[0].forEach(item => {
-          option1.series[0].data.push([item.cysj,item.hd])
-        });
-        data16[0].forEach(item => {
-          option2.xAxis.data.push(item.kcmc)
-          option2.series[0].data.push(item.zysl)
-        });
-        data17[0].forEach(item => {
-          option3.xAxis.data.push(item.hdsj)
-          let temp = item.pjedaydkl
-          let temp1 = temp.split('.')
-          option3.series[0].data.push(temp1[0])
-        });
-        data14[0].forEach(item => {
-          option4.xAxis.data.push(item.kcmc)
-          option4.series[0].data.push(item.zrs)
-        });
-        myChart.hideLoading(); // 隐藏加载动画
-        myChart1.hideLoading(); 
-        myChart2.hideLoading(); 
-        myChart3.hideLoading(); 
-        myChart4.hideLoading(); 
-        myChart.setOption(option)   //加载数据图表
-        myChart1.setOption(option1)
-        myChart2.setOption(option2)
-        myChart3.setOption(option3)
-        myChart4.setOption(option4)
-    }
+        };
+      //第一个图形的加载
+      //图中数据的填充
+      myChart.showLoading(); // 数据加载完之前先显示一段简单的loading动画
+      myChart1.showLoading();
+      myChart2.showLoading();
+      myChart3.showLoading();
+      myChart4.showLoading();
+      var item_kcmc =[]
+      var item_zysl =[]
+      if (data10&&data14&&data15&&data16) {
+          data10[0].forEach(item => {
+            option.dataset.source.push([item.pl,item.xymc])
+          });
+          data15[0].forEach(item => {
+            option1.series[0].data.push([item.cysj,item.hd])
+          });
+          data16[0].forEach(item => {
+            option2.xAxis.data.push(item.kcmc)
+            option2.series[0].data.push(item.zysl)
+          });
+          data17[0].forEach(item => {
+            option3.xAxis.data.push(item.hdsj)
+            let temp = item.pjedaydkl
+            let temp1 = temp.split('.')
+            option3.series[0].data.push(temp1[0])
+          });
+          data14[0].forEach(item => {
+            option4.xAxis.data.push(item.kcmc)
+            option4.series[0].data.push(item.zrs)
+          });
+          myChart.hideLoading(); // 隐藏加载动画
+          myChart1.hideLoading(); 
+          myChart2.hideLoading(); 
+          myChart3.hideLoading(); 
+          myChart4.hideLoading(); 
+          myChart.setOption(option)   //加载数据图表
+          myChart1.setOption(option1)
+          myChart2.setOption(option2)
+          myChart3.setOption(option3)
+          myChart4.setOption(option4)
+        }
     },
     changePage (d) {
         let self = this
@@ -640,7 +653,7 @@ export default {
       }
     },
     exportReport() {
-      alert('还未实现')
+      // alert('还未实现')
     }
   },
 }

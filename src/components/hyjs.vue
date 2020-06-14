@@ -2,7 +2,7 @@
  * @Author: liuyixue
  * @Date: 2020-05-18 11:52:49
  * @LastEditors: liuyixue
- * @LastEditTime: 2020-05-18 22:00:29
+ * @LastEditTime: 2020-06-14 22:42:26
  * @Description: file content
 -->
 <template>
@@ -10,21 +10,21 @@
     <div class="cardTitle"><Icon type="ios-square" />活跃教师</div>
     <Form :model="formHyjs" :label-width="80">
       <Row type="flex" justify="center">
-        <Col span="10">
+        <Col :xs="20" :sm="24" :md="10" :lg="10">
           <FormItem label="学院">
-            <Select v-model="formHyjs.xySelect">
+            <Select v-model="formHyjs.xySelect" style="max-width:300px">
               <Option v-for="item in xyList" :value="item.value" :key="item.value">{{ item.label }}</Option>
             </Select>
           </FormItem>
           </Col>
 
-          <Col span="10">
+          <Col :xs="20" :sm="24" :md="8" :lg="8">
           <FormItem label="时间">
-            <DatePicker type="date" placeholder="请选择" v-model="formHyjs.dateSelect" @on-change="dataChange" ></DatePicker>
+            <DatePicker type="date" placeholder="请选择" v-model="formHyjs.dateSelect" @on-change="dataChange" :options="dateOptions"></DatePicker>
           </FormItem>
           </Col>
 
-          <Col span="4">
+          <Col :xs="20" :sm="24" :md="6" :lg="6">
           <FormItem>
             <Button type="primary" @click="check">查询</Button>
           </FormItem>
@@ -57,9 +57,13 @@
 </template>
 <script>
 import { tbHyjsList } from '../js/hyjs'
+import moment from 'moment'
 
 export default {
   data() {
+    const param = this.$route.query,
+          startTime = param.start,
+          endTime = param.end
     const pageSize = this.limit
     const pageOffset = this.offset
     const total = tbHyjsList.data1.length
@@ -83,6 +87,11 @@ export default {
       total: total || 12,
       limit: parseInt(pageSize) || 10, // 每页条数
       offset: parseInt(pageOffset) || 0, // 每页的查询索引
+      dateOptions: {
+        disabledDate (date) {
+          return date && ((date.valueOf() > moment(endTime)) || (date.valueOf() < moment(startTime))); 
+        }
+      }
     }
   },
   mounted() {
