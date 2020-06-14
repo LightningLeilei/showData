@@ -2,7 +2,7 @@
  * @Author: liuyixue
  * @Date: 2020-05-18 11:52:49
  * @LastEditors: liuyixue
- * @LastEditTime: 2020-05-25 18:36:58
+ * @LastEditTime: 2020-06-14 21:41:41
  * @Description: file content
 --> 
 <template>
@@ -10,25 +10,25 @@
     <div class="cardTitle"><Icon type="ios-square" />运行课程</div>
     <Form :model="formYxkc" :label-width="80">
       <Row type="flex" justify="center">
-        <Col span="10">
+        <Col :xs="20" :sm="24" :md="10" :lg="10">
           <FormItem label="学院">
-            <Select v-model="formYxkc.xySelect">
+            <Select v-model="formYxkc.xySelect" style="max-width:300px">
               <Option v-for="item in xyList" :value="item.value" :key="item.value">{{ item.label }}</Option>
             </Select>
           </FormItem>
           </Col>
 
-          <Col span="8">
+        <Col :xs="20" :sm="24" :md="8" :lg="8">
           <FormItem label="时间">
-            <DatePicker style="width:240px" type="daterange" placeholder="请选择" v-model="formYxkc.dateSelect" @on-change="dataChange" :options="dateOptions" ></DatePicker>
+            <DatePicker style="max-width:240px" type="daterange" placeholder="请选择" v-model="formYxkc.dateSelect" @on-change="dataChange" :options="dateOptions" ></DatePicker>
           </FormItem>
           </Col>
 
-          <!-- <Col span="4"> -->
+        <Col :xs="20" :sm="24" :md="6" :lg="6">
           <FormItem>
             <Button type="primary" @click="check">查询</Button>
           </FormItem>
-        <!-- </Col> -->
+        </Col>
       </Row>
     </Form>
     <div>

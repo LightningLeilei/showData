@@ -2,31 +2,32 @@
  * @Author: liuyixue
  * @Date: 2019-07-01 09:56:18
  * @LastEditors: liuyixue
- * @LastEditTime: 2020-06-14 17:21:10
+ * @LastEditTime: 2020-06-14 22:05:01
  * @Description: file content
  -->
 <template>
   <div class="hello" id="pdfDOM">
     <div class="select" style="margin:10px">
       <Row type="flex" justify="center" >
-        <Col span="4"></Col>
-        <Col span="4">
+        <!-- :xs="20" :sm="16" :md="12" :lg="8" -->
+        <Col :xs="24" :sm="24" :md="24" :lg="4"></Col>
+        <Col :xs="20" :sm="24" :md="20" :lg="4">
           <span style="font-size:16px;float:right;margin:5px 10px">请选择时间段</span>
         </Col>
-        <Col span="6">
-          <Select style="width:240px" v-model="time_selected" @on-change="changeDate">
+        <Col :xs="20" :sm="24" :md="12" :lg="6">
+          <Select style="width:240px;margin-right:30px" v-model="time_selected" @on-change="changeDate">
             <Option value="1">昨日</Option>
             <Option value="2">近7日</Option>
             <Option value="3">近30日</Option>
             <Option value="4">自定义</Option>
           </Select>
           </Col>
-        <Col span="4">
-          <div id="datePick" style="visibility:hidden;margin-left:30px">
-            <DatePicker style="width:240px" type="daterange" placement="bottom-end" format="yyyy-MM-dd" placeholder="请选择"  @on-change="changeDateSelf" v-model="selfDate"></DatePicker>
+        <Col :xs="20" :sm="24" :md="12" :lg="4">
+          <div id="datePick" style="visibility:hidden">
+            <DatePicker style="width:240px" type="daterange" placement="bottom-end" format="yyyy-MM-dd" placeholder="请选择" :options="optionsForDate"  @on-change="changeDateSelf" v-model="selfDate"></DatePicker>
           </div>
         </Col>
-        <Col span="6"></Col>
+        <Col :xs="20" :sm="24" :md="24" :lg="6"></Col>
       </Row>
     </div>
     <Card :bordered="false">
@@ -43,13 +44,11 @@
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />各院系运行课程</div>
       <Row>
-        <Col span="12">
-          <!-- <p>{{selfDate}}时段内运行课程排行前列的学院统计如图所示，其中运行量最高的学院为{{strings}}学院、{{strings}}学院、{{strings}}学院、{{strings}}学院和{{strings}}学院。</p> -->
-
+        <Col :xs="24" :sm="24" :md="24" :lg="12">
           <span>{{selfDate}}时段内运行课程排行前列的学院统计如图所示，其中运行量最高的学院为</span>
           <span v-for="(item,idx) in total_yxkc.data1" :key ="idx" >{{item.value}}学院、</span>
         </Col>
-        <Col span="12">
+        <Col :xs="24" :sm="24" :md="24" :lg="12">
           <div id="map" style="height:300px"></div>
         </Col>
       </Row>
@@ -57,23 +56,22 @@
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />教学互动</div>
       <Row>
-        <Col span="12">
-          <div id="map1" style="height:300px"></div>
-        </Col>
-        <Col span="12">
+        <Col :xs="24" :sm="24" :md="24" :lg="12">
           <p>{{selfDate}}时段内教学过程中平均每日互动数量为{{total_jxhd.counts}}次，具体教学互动情况如图所示。</p>
         </Col>
-        
+        <Col :xs="24" :sm="24" :md="24" :lg="12">
+          <div id="map1" style="height:300px"></div>
+        </Col>
       </Row>
     </Card>
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />教学资源</div>
       <Row>
-        <Col span="12">
+        <Col :xs="24" :sm="24" :md="24" :lg="12">
           <span>{{selfDate}}时段内各课程教学资源上传数量如图所示，其中教学资源上传数量最多的课程为</span>
           <span v-for="(item,idx) in total_jxzy.data1" :key ="idx" >{{item.value}}、</span>
         </Col>
-        <Col span="12">
+        <Col :xs="24" :sm="24" :md="24" :lg="12">
           <div id="map2" style="height:300px"></div>
         </Col>
       </Row>
@@ -81,21 +79,21 @@
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />到课率</div>
       <Row>
-        <Col span="12">
-          <div id="map3" style="height:300px"></div>
-        </Col>
-        <Col span="12">
+        <Col :xs="24" :sm="24" :md="24" :lg="12">
           <p>{{selfDate}}时段内教学过程中平均到课率为{{num}}，具体到课率统计如图所示。 </p>
+        </Col>
+        <Col :xs="24" :sm="24" :md="24" :lg="12">
+          <div id="map3" style="height:300px"></div>
         </Col>
       </Row>
     </Card>
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />最受欢迎课程</div>
       <Row>
-        <Col span="12">
+        <Col :xs="24" :sm="24" :md="24" :lg="12">
           <p>{{selfDate}}时段内最受学生们欢迎的课程为{{strings}}、{{strings}}、{{strings}}、{{strings}}和{{strings}}。参与学生人数较多的课程与其参与人次如图所示。 </p>
         </Col>
-        <Col span="12">
+        <Col :xs="24" :sm="24" :md="24" :lg="12">
           <div id="map4" style="height:300px"></div>
         </Col>
       </Row>
@@ -103,7 +101,6 @@
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />学习空间（学习通）</div>
       <p>学习空间（学习通）共运行课程{{num}}门，平均每日运行课程{{num}}门，活跃教师{{num}}人，平均每日活跃教师{{num}}人，活跃学生{{num}}人，平均每日活跃学生{{num}}人。详细情况如下表所示: </p>
-      <!-- <div style="width:80%"> -->
         <Row type="flex" justify="center">
           <Col span="4"></Col>
           <Col span="16">
@@ -158,11 +155,11 @@
       </div>
     </Card>
     <Row type="flex" justify="center">
-      <Col span="10"></Col>
-      <Col span="4">
-        <Button style="background-color:#a40000;width:200px" @click="exportReport">点击导出简报</Button>
+      <Col :xs="6" :sm="8" :md="8" :lg="10"></Col>
+      <Col :xs="12" :sm="8" :md="8" :lg="4">
+        <Button style="background-color:#a40000;width:160px" @click="exportReport">点击导出简报</Button>
       </Col>
-      <Col span="10"></Col>
+      <Col :xs="6" :sm="8" :md="8" :lg="10"></Col>
     </Row>
   </div>
 </template>
@@ -170,7 +167,6 @@
 <script>
 import moment from 'moment'
 import { tbXxkjList,tbYktList } from '../js/tables'
-// import { jsPDF } from '../js/jspdf.min.js'
 import html2Canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 
@@ -180,6 +176,12 @@ export default {
   data () {
     const today = moment()
     return {
+      // 0614update
+      optionsForDate: {
+        disabledDate (date) {
+            return date && date.valueOf() > Date.now();
+        }
+      },
       today,
       //newData:time.timeData(),
       // openDateRange:true,
@@ -394,28 +396,53 @@ export default {
       })
     },
     jumptoHyjs() {
+      const params = {
+        start:this.startTime,
+        end:this.endTime
+      }
       this.$router.push({
-        path: '/hyjs'
+        path: '/hyjs',
+        query: params
       })
     },
     jumptoHyxs() {
+      const params = {
+        start:this.startTime,
+        end:this.endTime
+      }
       this.$router.push({
-        path: '/hyxs'
+        path: '/hyxs',
+        query: params
       })
     },
     jumptoHybj() {
+      const params = {
+        start:this.startTime,
+        end:this.endTime
+      }
       this.$router.push({
-        path: '/hybj'
+        path: '/hybj',
+        query: params
       })
     },
     jumptoJxhd() {
+      const params = {
+        start:this.startTime,
+        end:this.endTime
+      }
       this.$router.push({
-        path: '/jxhd'
+        path: '/jxhd',
+        query: params
       })
     },
     jumptoJxzy() {
+      const params = {
+        start:this.startTime,
+        end:this.endTime
+      }
       this.$router.push({
-        path: '/jxzy'
+        path: '/jxzy',
+        query: params
       })
     },
     echartsGeo() {

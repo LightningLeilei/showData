@@ -2,7 +2,7 @@
  * @Author: liuyixue
  * @Date: 2019-07-01 09:56:18
  * @LastEditors: liuyixue
- * @LastEditTime: 2020-05-25 16:38:26
+ * @LastEditTime: 2020-06-14 21:59:47
  * @Description: file content
  */
 // The Vue build version to load with the `import` command
@@ -13,9 +13,11 @@ import router from './router'
 import 'echarts/map/js/china'
 import ViewUI from 'view-design';
 import 'view-design/dist/styles/iview.css';
+import moment from 'moment'
 
 Vue.config.productionTip = false
 Vue.use(ViewUI);
+Vue.use(moment);
 
 /* eslint-disable no-new */
 new Vue({

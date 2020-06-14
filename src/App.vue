@@ -2,7 +2,7 @@
  * @Author: liuyixue
  * @Date: 2019-07-01 09:56:18
  * @LastEditors: liuyixue
- * @LastEditTime: 2020-05-25 18:13:58
+ * @LastEditTime: 2020-06-14 21:54:18
  * @Description: file content
  -->
 <template>
@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   name: 'App',
   data() {
