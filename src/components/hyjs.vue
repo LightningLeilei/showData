@@ -13,16 +13,16 @@
         <Col :xs="20" :sm="24" :md="10" :lg="10">
           <FormItem label="学院">
             <Select v-model="formHyjs.xySelect" style="max-width:300px">
-              <Option v-for="item in xyList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+              <Option v-for="item in xyList" :value="item.xymc" :key="item.xymc">{{ item.xymc }}</Option>
             </Select>
           </FormItem>
           </Col>
 
-          <Col :xs="20" :sm="24" :md="8" :lg="8">
+          <!-- <Col :xs="20" :sm="24" :md="8" :lg="8">
           <FormItem label="时间">
             <DatePicker type="date" placeholder="请选择" v-model="formHyjs.dateSelect" @on-change="dataChange" :options="dateOptions"></DatePicker>
           </FormItem>
-          </Col>
+          </Col> -->
 
           <Col :xs="20" :sm="24" :md="6" :lg="6">
           <FormItem>
@@ -65,14 +65,14 @@ export default {
           startTime = param.start,
           endTime = param.end
     const pageSize = this.limit
-    const pageOffset = this.offset
+    const pageOffset = this.current
     const total = tbHyjsList.data1.length
     return {
+      startTime:startTime,
+      endTime:endTime,
       // 下拉列表数据
       xyList: [
-        {value:1,label:'学院一'},
-        {value:2,label:'学院二'},
-        {value:3,label:'学院三'}
+
       ],
       // 表单项数据
       formHyjs: {
@@ -85,8 +85,8 @@ export default {
         data1: tbHyjsList.data1
       },
       total: total || 12,
-      limit: parseInt(pageSize) || 10, // 每页条数
-      offset: parseInt(pageOffset) || 0, // 每页的查询索引
+      limit: parseInt(pageSize) || 7, // 每页条数
+      current: parseInt(pageOffset) || 1, // 每页的查询索引
       dateOptions: {
         disabledDate (date) {
           return date && ((date.valueOf() > moment(endTime)) || (date.valueOf() < moment(startTime))); 
@@ -95,25 +95,53 @@ export default {
     }
   },
   mounted() {
+    this.getList(this.startTime,this.endTime)
   },
   methods: {
-    getList() {
+    getList(start,end) {
       const params = {
         limit: this.limit, // 单页数据条数
-        offset: this.offset,  // 第多少页
-        param: {
-          xy: this.formHyjs.xySelect, // 选择院系
-          date: this.formHyjs.dateSelect  // 选择日期
-        }
+        current: this.current,  // 第多少页
+        // param: {
+        //   xy: this.formYxkc.xySelect, // 选择院系
+        //   date: this.formYxkc.dateSelect  // 选择日期
+        // }
       }
+      let _self = this
       $.ajax({
         type: 'POST',
-        url: "/login",
+        url: "http://172.18.4.32:8081/zxjx/teacher-info/xyTeacherinfo/"+start+"/"+end+"",
         dataType: "json",
         contentType : "application/json",
         data: JSON.stringify(params),
         success: function(data) {
-          console.log(data)
+          //填充数据，其中if的判断为下拉框查询的选择
+          data.forEach(item => {
+            if(_self.formHyjs.xySelect!=0){
+              if(_self.formHyjs.xySelect == item.xymc){
+                  tbHyjsList.data1.push(item)
+              }else{
+                  //不进行操作
+              }      
+            }else{
+              tbHyjsList.data1.push(item)
+            }
+          });
+          let judge = true
+          for(var i=0;i<data.length;i++){
+            for(var j=0;j<_self.xyList.length;j++){
+              if(_self.xyList[j].xymc == data[i].xymc){
+                judge = false
+                break
+              }
+            }
+            if(judge == true){
+              _self.xyList.push(data[i])
+              judge = true
+            }else{
+              judge = true
+            }
+          }   
         },
         error: function() {
           console.log("error!!")
@@ -133,15 +161,15 @@ export default {
       this.total = tbHyjsList.data1.length
     },
     check() {
-      let xy = this.formHyjs.xySelect > 0 ? this.formHyjs.xySelect - 1 : 0
-      // alert('选择学院:' +  this.xyList[xy].label + '选择日期' + this.formHyjs.dateSelect)
+      tbHyjsList.data1=[]
+      this.getList(this.startTime,this.endTime)
     },
     dataChange(date) {
       this.formHyjs.dateSelect = date
     },
     changePage (d) {
       let self = this
-      self.offset = self.limit * (d - 1)
+      self.current = self.limit * (d - 1)
       self.getList()
     },
     changePageSize (d) {

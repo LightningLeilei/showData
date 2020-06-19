@@ -5,111 +5,33 @@
  * @LastEditTime: 2020-05-18 20:37:47
  * @Description: file content
  */
+
+//  $.ajax({
+//   type: "POST",
+//   url: "/zxjx/teach-active/runCourse",
+//   data: data,
+//   dataType: "json",
+//   success: function (data) {
+//      console.log(data);
+//   }});
 export const tbYxkcList = {
   columns1: [
     {
       title: '课程名',
       align: 'center',
-      key: 'kcName'
+      key: 'kcmc'
     },
     {
       title: '开课教师',
       align: 'center',
-      key: 'kcTeacher'
+      key: 'jsxm'
     },
     {
       title: '学院',
       align: 'center',
-      key: 'kcCollege'
+      key: 'xymc'
     }],
-  data1: [{
-    kcName: '计算机科学',
-    kcTeacher: '计老师',
-    kcCollege: '信息科学与技术学院'
-  },
-  {
-    kcName: '软件工程',
-    kcTeacher: '工老师',
-    kcCollege: '软件学院'
-  },
-  {
-    kcName: '计算机科学',
-    kcTeacher: '计老师',
-    kcCollege: '信息科学与技术学院'
-  },
-  {
-    kcName: '软件工程',
-    kcTeacher: '工老师',
-    kcCollege: '软件学院'
-  },
-  {
-    kcName: '计算机科学',
-    kcTeacher: '计老师',
-    kcCollege: '信息科学与技术学院'
-  },
-  {
-    kcName: '软件工程',
-    kcTeacher: '工老师',
-    kcCollege: '软件学院'
-  },
-  {
-    kcName: '计算机科学',
-    kcTeacher: '计老师',
-    kcCollege: '信息科学与技术学院'
-  },
-  {
-    kcName: '软件工程',
-    kcTeacher: '工老师',
-    kcCollege: '软件学院'
-  },
-  {
-    kcName: '计算机科学',
-    kcTeacher: '计老师',
-    kcCollege: '信息科学与技术学院'
-  },
-  {
-    kcName: '软件工程',
-    kcTeacher: '工老师',
-    kcCollege: '软件学院'
-  },
-  {
-    kcName: '计算机科学',
-    kcTeacher: '计老师',
-    kcCollege: '信息科学与技术学院'
-  },
-  {
-    kcName: '软件工程',
-    kcTeacher: '工老师',
-    kcCollege: '软件学院'
-  },
-  {
-    kcName: '计算机科学',
-    kcTeacher: '计老师',
-    kcCollege: '信息科学与技术学院'
-  },
-  {
-    kcName: '软件工程',
-    kcTeacher: '工老师',
-    kcCollege: '软件学院'
-  },
-  {
-    kcName: '计算机科学',
-    kcTeacher: '计老师',
-    kcCollege: '信息科学与技术学院'
-  },
-  {
-    kcName: '软件工程',
-    kcTeacher: '工老师',
-    kcCollege: '软件学院'
-  },
-  {
-    kcName: '计算机科学',
-    kcTeacher: '计老师',
-    kcCollege: '信息科学与技术学院'
-  },
-  {
-    kcName: '软件工程',
-    kcTeacher: '工老师',
-    kcCollege: '软件学院'
-  }]
+  data1: [
+
+  ]
 }

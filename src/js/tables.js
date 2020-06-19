@@ -31,12 +31,12 @@ export const tbXxkjList = {
     {
       title: '活跃教师',
       align: 'center',
-      key: 'xhrs'
+      key: 'hdlx'
     },
     {
       title: '活跃学生',
       align: 'center',
-      key: 'hdlx'
+      key: 'xhrs'
     },
     {
       title: '教学互动',
@@ -63,12 +63,12 @@ export const tbYktList = {
     {
       title: '活跃教师',
       align: 'center',
-      key: 'xhrs'
+      key: 'hdlx'
     },
     {
       title: '活跃学生',
       align: 'center',
-      key: 'hdlx'
+      key: 'xhrs'
     },
     {
       title: '教学互动',

@@ -22,7 +22,8 @@
           </Select>
           </Col>
         <Col :xs="20" :sm="24" :md="12" :lg="4">
-          <div id="datePick" style="visibility:hidden">
+          <!-- <div id="datePick" style="visibility:hidden"> -->
+        <div id="datePick">
             <DatePicker style="width:240px" type="daterange" placement="bottom-end" format="yyyy-MM-dd" placeholder="请选择" :options="optionsForDate"  @on-change="changeDateSelf" v-model="selfDate"></DatePicker>
           </div>
         </Col>
@@ -30,23 +31,25 @@
       </Row>
     </div>
     <Card :bordered="false">
-      <p style="font-size:20px">在线教学运行基本平稳，共运行课程{{totalAll.kc_total}}门，活跃教师{{totalAll.js_total}}人，活跃学生{{totalAll.xs_total}}人。其中学习空间每日运行课程平均{{totalAll.xx_kc}}门，每日活跃教师平均{{totalAll.xx_js}}人，每日活跃学生平均{{totalAll.xx_xs}}人；雨课堂每日运行课程平均{{totalAll.ykt_kc}}门，每日活跃教师平均{{totalAll.ykt_js}}人，每日活跃学生平均{{totalAll.ykt_xs}}人。</p>
+      <p style="font-size:20px;text-align:justify" >{{startTime}}至{{endTime}}时段内，我校在线教学运行基本平稳，共运行课程{{totalAll.kc_total}}门，活跃教师{{totalAll.js_total}}人，活跃学生{{totalAll.xs_total}}人。其中学习空间每日运行课程平均{{totalAll.xx_kc}}门，每日活跃教师平均{{totalAll.xx_js}}人，每日活跃学生平均{{totalAll.xx_xs}}人；雨课堂每日运行课程平均{{totalAll.ykt_kc}}门，每日活跃教师平均{{totalAll.ykt_js}}人，每日活跃学生平均{{totalAll.ykt_xs}}人。</p>
     </Card>
     <Row style="margin:20px;" type="flex" justify="space-between">
       <Button style="background-color:#fb6e52;" @click="jumptoYxkc" id="yxkc">运行课程<div>{{total_btn.yxkc}}</div></Button>
       <Button style="background-color:#ffc655;" @click="jumptoHyjs" id="hyjs">活跃教师<div>{{total_btn.hyjs}}</div></Button>
       <Button style="background-color:#2dc7e9;" @click="jumptoHyxs" id="hyxs">活跃学生<div>{{total_btn.hyxs}}</div></Button>
-      <Button style="background-color:#3cd7b8;" @click="jumptoHybj" id="hybj">活跃班级<div>{{total_btn.hybj}}</div></Button>
+      <!-- <Button style="background-color:#3cd7b8;" @click="jumptoHybj" id="hybj">活跃班级<div>{{total_btn.hybj}}</div></Button> -->
       <Button style="background-color:#f6b37f;" @click="jumptoJxhd" id="jxhd">教学互动<div>{{total_btn.jxhd}}</div></Button>
-      <Button style="background-color:#8f9ae9;" @click="jumptoJxzy" id="jxzy">教学资源<div>{{total_btn.jxzy}}</div></Button>
+      <!-- <Button style="background-color:#8f9ae9;" @click="jumptoJxzy" id="jxzy">教学资源<div>{{total_btn.jxzy}}</div></Button> -->
       <!-- <Button style="background-color:#fb6e52;" to="./yxkc">运行课程<div>{{55}}</div></Button> -->
     </Row>
     <Card :bordered="false">
       <div class="cardTitle"><Icon type="ios-square" />各院系运行课程</div>
-      <Row>
-        <Col :xs="24" :sm="24" :md="24" :lg="12">
-          <span>{{selfDate}}时段内运行课程排行前列的学院统计如图所示，其中运行量最高的学院为</span>
-          <span v-for="(item,idx) in total_yxkc.data1" :key ="idx" >{{item.value}},</span>
+      <Row style="text-align:justify">
+        <Col :xs="24" :sm="24" :md="24" :lg="12" >
+          <p><span>{{startTime}}至{{endTime}}时段内运行课程排行前列的学院为</span>
+          <span v-for="(item,idx) in total_yxkc.data1" :key ="idx" >{{item.value}}，</span>
+          <span>统计情况如图所示。</span>
+          </p>
         </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="12">
           <div id="map" style="height:300px"></div>
@@ -57,19 +60,20 @@
       <div class="cardTitle"><Icon type="ios-square" />教学互动</div>
       <Row>
         <Col :xs="24" :sm="24" :md="24" :lg="12">
-          <p>{{selfDate}}时段内教学过程中平均每日互动数量为{{total_jxhd.counts}}次，具体教学互动情况如图所示。</p>
+          <p>{{startTime}}至{{endTime}}时段内教学过程中平均每日互动数量为{{total_jxhd.counts}}次，具体教学互动情况如图所示。</p>
         </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="12">
           <div id="map1" style="height:300px"></div>
         </Col>
       </Row>
     </Card>
-    <Card :bordered="false">
+    <Card :bordered="false" >
       <div class="cardTitle"><Icon type="ios-square" />教学资源</div>
       <Row>
         <Col :xs="24" :sm="24" :md="24" :lg="12">
-          <span>{{selfDate}}时段内各课程教学资源上传数量如图所示，其中教学资源上传数量最多的课程为</span>
+          <p><span>{{startTime}}至{{endTime}}时段内各课程教学资源上传数量如图所示，其中教学资源上传数量最多的课程为</span>
           <span v-for="(item,idx) in total_jxzy.data1" :key ="idx" >{{item.value}},</span>
+          </p>
         </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="12">
           <div id="map2" style="height:300px"></div>
@@ -80,7 +84,7 @@
       <div class="cardTitle"><Icon type="ios-square" />到课率</div>
       <Row>
         <Col :xs="24" :sm="24" :md="24" :lg="12">
-          <p>{{selfDate}}时段内教学过程中平均到课率为{{total_dkl.counts}}，具体到课率统计如图所示。 </p>
+          <p>{{startTime}}至{{endTime}}时段内教学过程中平均到课率为{{total_dkl.counts}}，具体到课率统计如图所示。 </p>
         </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="12">
           <div id="map3" style="height:300px"></div>
@@ -92,8 +96,8 @@
       <Row>
         <Col :xs="24" :sm="24" :md="24" :lg="12">
          <p>
-         <span>{{selfDate}}时段内最受学生们欢迎的课程为</span>
-          <span v-for="(item,idx) in total_hykc.data1" :key ="idx" >{{item.value}},</span>
+         <span>{{startTime}}至{{endTime}}时段内最受学生们欢迎的课程为</span>
+          <span v-for="(item,idx) in total_hykc.data1" :key ="idx" >{{item.value}}，</span>
           参与学生人数较多的课程与其参与人次如图所示。</p>
         </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="12">
@@ -279,47 +283,49 @@ export default {
     updateIndexData(start,end){
       let _self = this;
     //获得主页面最顶部概括介绍中的数据，其中funN按所需数据的顺序命名
-    //遗留问题：fun13在postman中调试可以拿到，这里会调用失败
-    var fun1 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/runCourse/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
-        fun2 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/runTeacherNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
-        fun3 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runStudentNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
-        fun4 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/getRunCourseAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
-        fun5 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/getRunTeacherAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
-        fun6 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runXxkjAvgStudentNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
-        fun7 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/getYKTCourseAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
-        fun8 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/getYKTTeacherAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
-        fun9 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runYktAvgStudentNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+    var fun1 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active/runCourse/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun2 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active/runTeacherNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun3 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active-participant/runStudentNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun4 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active/getRunCourseAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun5 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active/getRunTeacherAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun6 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active-participant/runXxkjAvgStudentNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun7 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active/getYKTCourseAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun8 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active/getYKTTeacherAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun9 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active-participant/runYktAvgStudentNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
         //各院系运行课程的数据获取：返回的数据类型为二维数组
-        fun10 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/getRunCourseXYFq/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun10 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active/getRunCourseXYFq/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
         //教学互动
-        fun11 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runAvgHdNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun11 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active-participant/runAvgHdNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
         //教学资源
-        fun12 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-resource/runMaxCourseFiveNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun12 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-resource/runMaxCourseFiveNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
         //到课率
-        //fun13 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runAvgDkl/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun13 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active-participant/runAvgDkl/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
         //最受欢迎课程
-        fun14 = $.ajax({url: "http://127.0.0.1:8081/zxjx/course-info/popCourseName/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
-        //学习空间（学习通）
-        //fun14 = $.ajax({url: "http://127.0.0.1:8081/zxjx/course-info/popCourseName/"+start+"/"+end+"",type:'POST',dataType:'JSON'});
+        fun14 = $.ajax({url: "http://172.18.4.32:8081/zxjx/course-info/popCourseName/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
         //教学互动图表数据
-        fun15 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runEveryDayHdNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun15 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active-participant/runEveryDayHdNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
         //教学资源图表数据
-        fun16 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-resource/runCourseResourceNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun16 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-resource/runCourseResourceNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
          //到课率图表数据
-        fun17 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runEveryDayAvgDkl/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun17 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active-participant/runEveryDayAvgDkl/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
         //学习空间（学习通）
-        fun18 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/getCxxCourseTeacher/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
-        fun19 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runSumAndAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
-        //fun20 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun18 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active/getCxxCourseTeacher/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun19 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active/getCxxCourse2Teacher/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun20 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active/getCxxCourse4Teacher/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun21 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active-participant/runSumAndAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun22 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active-participant/runAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
         // //学习空间（学习通）表格数据
-        fun21 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/getBiaoCxx192/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun23 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active/getBiaoCxx192/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
         //雨课堂
-        fun22 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/getYctCourseTeacher/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
-        fun23 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runYctSumAndAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
-        fun24 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active-participant/runYctSumAndAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun24 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active/getYctCourseTeacher/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun25 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active/getYctCourse2Teacher/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun26 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active/getYctCourse4Teacher/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun27 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active-participant/runYctSumAndAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
+        fun28 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active-participant/runYctSumAndAvgNumber/"+start+"/"+end+"",type:'POST',dataType:'JSON'}),
         //雨课堂表格数据
-        fun25 = $.ajax({url: "http://127.0.0.1:8081/zxjx/teach-active/getBiaoYct1002/"+start+"/"+end+"",type:'POST',dataType:'JSON'});
-      $.when(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,fun9,fun10,fun11,fun12,fun14,fun15,fun16,fun17,fun18,fun19,fun21,fun22,fun23,fun24,fun25).then(function(data1,data2,data3,data4,data5,data6,data7,data8,data9,data10,data11,data12,data14,data15,data16,data17,data18,data19,data21,data22,data23,data24,data25){
+        fun29 = $.ajax({url: "http://172.18.4.32:8081/zxjx/teach-active/getBiaoYct1002/"+start+"/"+end+"",type:'POST',dataType:'JSON'});
+        //$.when(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,fun9,fun10,fun11,fun12,fun13,fun14,fun15,fun16,fun17,fun18,fun19,fun20,fun21,fun22,fun23,fun24,fun25,fun26,fun27,fun28,fun29).then(function(data1,data2,data3,data4,data5,data6,data7,data8,data9,data10,data11,data12,data13,data14,data15,data16,data17,data18,data19,data20,data21,data22,data23,data24,data25,data26,data27,data28,data29){        
+        $.when(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,fun9,fun10,fun11,fun12,fun14,fun15,fun16,fun17,fun18,fun19,fun20,fun21,fun22,fun23,fun24,fun25,fun26,fun27,fun28,fun29).then(function(data1,data2,data3,data4,data5,data6,data7,data8,data9,data10,data11,data12,data14,data15,data16,data17,data18,data19,data20,data21,data22,data23,data24,data25,data26,data27,data28,data29){        
         //首页面下钻按钮的赋值
         _self.total_btn.yxkc=data1[0];
         _self.total_btn.hyjs=data2[0];
@@ -338,29 +344,28 @@ export default {
         _self.totalAll.ykt_js=data8[0];
         _self.totalAll.ykt_xs=data9[0];
         _self.total_jxhd.counts=data11[0];
-        // console.log(data21)
-        _self.total_xxkj.yxkcAll=data18[0][0].ckc;
-        _self.total_xxkj.yxkc=data18[0][0].avgckc;
-        _self.total_xxkj.hyjsAll=data18[0][0].tzrs;
-        _self.total_xxkj.hyjs=data18[0][0].avgtrs;
-        _self.total_xxkj.hyxsAll=data19[0];   
-        // _self.total_xxkj.hyxs=data20[0];
-        _self.total_ykt.yxkcAll=data22[0][0].ckc;
-        _self.total_ykt.yxkc=data22[0][0].avgckc;
-        _self.total_ykt.hyjsAll=data22[0][0].tzrs;
-        _self.total_ykt.hyjs=data22[0][0].avgtrs;
-        _self.total_ykt.hyxsAll=data23[0];
-        _self.total_ykt.hyxs=data24[0];     
-        // //遗留问题，表格赋值第一行空白
-        for(var i=0;i<data21[0].length;i++){
-            _self.XxkjTable.data1.push(data21[0][i])
-        }
-        for(var i=0;i<data25[0].length;i++){
-            _self.YktTable.data1.push(data25[0][i])
-        }
-        //console.log(_self.YktTable.data1)
-        // console.log(data25)   
         //_self.total_dkl.counts=data13[0];
+        _self.total_xxkj.yxkcAll=data18[0][0].ckc;
+        _self.total_xxkj.yxkc=data19[0][0].avgckc;
+        _self.total_xxkj.hyjsAll=data18[0][0].tzrs;
+        _self.total_xxkj.hyjs=data20[0][0].avgtrs;
+        _self.total_xxkj.hyxsAll=data21[0];   
+        // _self.total_xxkj.hyxs=data22[0];
+        _self.total_ykt.yxkcAll=data24[0][0].ckc;
+        _self.total_ykt.yxkc=data25[0][0].avgckc;
+        _self.total_ykt.hyjsAll=data24[0][0].tzrs;
+        _self.total_ykt.hyjs=data26[0][0].avgtrs;
+        _self.total_ykt.hyxsAll=data27[0];
+        _self.total_ykt.hyxs=data28[0];
+        //重置表格中的数据
+        _self.XxkjTable.data1 =[]     
+        for(var i=0;i<data23[0].length;i++){
+            _self.XxkjTable.data1.push(data23[0][i])
+        }
+        _self.YktTable.data1= []
+        for(var i=0;i<data29[0].length;i++){
+            _self.YktTable.data1.push(data29[0][i])
+        }
         //各院系运行课程、教学资源、最受欢迎课程模块的赋值
         _self.total_yxkc.data1=[]
         _self.total_jxzy.data1=[]
@@ -485,19 +490,19 @@ export default {
         yAxis: {
            type: 'category'
         },
-        visualMap: {
-          // 视觉效果数值以横坐标amount为基准
-          orient: 'horizontal',
-          left: 'center',
-          min: 0,
-          max: 500,
-          text: ['High Score', 'Low Score'],
-          // Map the score column to color
-          dimension: 0,
-          inRange: {
-              color: ['#D7DA8B', '#E15457']
-          }
-        },
+        // visualMap: {
+        //   // 视觉效果数值以横坐标amount为基准
+        //   orient: 'horizontal',
+        //   left: 'center',
+        //   min: 0,
+        //   max: 500,
+        //   text: ['High Score', 'Low Score'],
+        //   // Map the score column to color
+        //   dimension: 0,
+        //   inRange: {
+        //       color: ['#D7DA8B', '#E15457']
+        //   }
+        // },
         series: [
           {
             type: 'bar',
@@ -670,6 +675,7 @@ export default {
 p{ 
   text-indent:2em;
   line-height: 2;
+  text-align: justify;
 }
 .p_inAll p{
   text-indent:0;

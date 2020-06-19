@@ -11,18 +11,18 @@
     <Form :model="formJxhd" :label-width="80">
       <Row type="flex" justify="center">
         <Col :xs="20" :sm="24" :md="10" :lg="10">
-          <FormItem label="学院">
+          <FormItem label="课程名称">
             <Select v-model="formJxhd.xySelect" style="max-width:300px">
-              <Option v-for="item in xyList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+              <Option v-for="item in xyList" :value="item.kcmc" :key="item.kcmc">{{ item.kcmc }}</Option>
             </Select>
           </FormItem>
           </Col>
-
+<!-- 
           <Col :xs="20" :sm="24" :md="8" :lg="8">
           <FormItem label="时间">
             <DatePicker type="date" placeholder="请选择" v-model="formJxhd.dateSelect" @on-change="dataChange" :options="dateOptions" ></DatePicker>
           </FormItem>
-          </Col>
+          </Col> -->
 
           <Col :xs="20" :sm="24" :md="6" :lg="6">
           <FormItem>
@@ -68,11 +68,10 @@ export default {
     const pageOffset = this.offset
     const total = tbJxhdList.data1.length
     return {
+      startTime:startTime,
+      endTime:endTime,
       // 下拉列表数据
       xyList: [
-        {value:1,label:'学院一'},
-        {value:2,label:'学院二'},
-        {value:3,label:'学院三'}
       ],
       // 表单项数据
       formJxhd: {
@@ -95,25 +94,53 @@ export default {
     }
   },
   mounted() {
+    this.getList(this.startTime,this.endTime)
   },
   methods: {
-    getList() {
+    getList(start,end) {
       const params = {
         limit: this.limit, // 单页数据条数
-        offset: this.offset,  // 第多少页
-        param: {
-          xy: this.formJxhd.xySelect, // 选择院系
-          date: this.formJxhd.dateSelect  // 选择日期
-        }
+        current: this.current,  // 第多少页
+        // param: {
+        //   xy: this.formYxkc.xySelect, // 选择院系
+        //   date: this.formYxkc.dateSelect  // 选择日期
+        // }
       }
+      let _self = this
       $.ajax({
         type: 'POST',
-        url: "/login",
+        url: "http://172.18.4.32:8081/zxjx/teach-active-participant/xzJXHDinfo/"+start+"/"+end+"",
         dataType: "json",
         contentType : "application/json",
         data: JSON.stringify(params),
         success: function(data) {
-          console.log(data)
+          //填充数据，其中if的判断为下拉框查询的选择
+          data.forEach(item => {
+            if(_self.formJxhd.xySelect!=0){
+              if(_self.formJxhd.xySelect == item.kcmc){
+                  tbJxhdList.data1.push(item)
+              }else{
+                  //不进行操作
+              }      
+            }else{
+              tbJxhdList.data1.push(item)
+            }
+          });
+          let judge = true
+          for(var i=0;i<data.length;i++){
+            for(var j=0;j<_self.xyList.length;j++){
+              if(_self.xyList[j].kcmc == data[i].kcmc){
+                judge = false
+                break
+              }
+            }
+            if(judge == true){
+              _self.xyList.push(data[i])
+              judge = true
+            }else{
+              judge = true
+            }
+          } 
         },
         error: function() {
           console.log("error!!")
@@ -133,8 +160,8 @@ export default {
       this.total = tbJxhdList.data1.length
     },
     check() {
-      let xy = this.formJxhd.xySelect > 0 ? this.formJxhd.xySelect - 1 : 0
-      // alert('选择学院:' +  this.xyList[xy].label + '选择日期' + this.formJxhd.dateSelect)
+      tbJxhdList.data1=[]
+      this.getList(this.startTime,this.endTime)
     },
     dataChange(date) {
       this.formJxhd.dateSelect = date
